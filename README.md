@@ -14,3 +14,12 @@ https://python-poetry.org/docs/#installing-with-the-official-installer
 
 # Apps created
 1. Marketing (25/2/23) by ajmal
+
+
+# configuration of postgresql
+
+    ## user
+         CREATE USER sammy WITH PASSWORD 'pa$$word';
+
+
+

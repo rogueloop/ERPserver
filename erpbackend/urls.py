@@ -16,6 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.urls import path, include  # Ensure `include` is imported
+from rest_framework import routers
+from marketing.views import OrderViewSet
+
+# Notes router
+marketing_router = routers.SimpleRouter()
+marketing_router.register(
+    r'marketing',
+    OrderViewSet,
+    basename='marketing',
+)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(marketing_router.urls))
 ]
