@@ -32,4 +32,5 @@ marketing_router.register(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(marketing_router.urls))
+    
 ]

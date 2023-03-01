@@ -22,4 +22,8 @@ https://python-poetry.org/docs/#installing-with-the-official-installer
          CREATE USER sammy WITH PASSWORD 'pa$$word';
 
 
-
+# Making migrations 
+1. create migratiosns 
+`poetry run python manage.py makemigrations`
+2. Run the following command to apply the migrations to your database
+```poetry run python manage.py migrate```

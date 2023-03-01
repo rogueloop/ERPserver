@@ -1,0 +1,90 @@
+{
+    "woso": {
+      "no": "",
+      "date": "",
+      "customer": "",
+      "po_no": "",
+      "po_date": "",
+      "item": ""
+    },
+    "consignee_address": {
+      "org": "",
+      "addr_line1": "",
+      "addr_line2": "",
+      "addr_line3": "",
+      "pin": "",
+      "phone_no": "",
+      "gst_no": ""
+    },
+    "buyer_address": {
+      "org": "",
+      "addr_line1": "",
+      "addr_line2": "",
+      "addr_line3": "",
+      "pin": "",
+      "phone_no": "",
+      "gst_no": ""
+    },
+    "additional_info": {
+      "consignee_tel_no": "",
+      "buyer_tel_no": "",
+      "payment_terms": "",
+      "paying_authority": "",
+      "penalty_clause": "",
+      "insurance": "",
+      "delivery_date": "",
+      "delivery_place": "",
+      "freight": "",
+      "mode_of_despatch": "",
+      "inspection": "",
+      "special_instruction": "",
+      "despatch_additional_info": "",
+      "note": "",
+      "remarks": ""
+    },
+    "item_details": {
+      "items": [
+        {
+          "si_no": 1,
+          "is_std": true,
+          "item": "",
+          "rating": "",
+          "quantity": 1,
+          "unit": "",
+          "model": "",
+          "wo_nos": "",
+          "basic_rate": "",
+          "basic_amount": "",
+          "dp": "",
+          "net_weight_per_unit": "",
+          "gross_weight_per_unit": "",
+          "total_weigth": "",
+          "serial_nos": ""
+        },
+        {
+          "si_no": 1,
+          "is_std": true,
+          "item": "",
+          "rating": "",
+          "quantity": 1,
+          "unit": "",
+          "model": "",
+          "wo_nos": "",
+          "basic_rate": "",
+          "basic_amount": "",
+          "dp": "",
+          "net_weight_per_unit": "",
+          "gross_weight_per_unit": "",
+          "total_weigth": "",
+          "serial_nos": ""
+        }
+      ],
+      "total": "",
+      "packing_forwarding_charge": "",
+      "freight": "",
+      "sub_total": "",
+      "tax_gst": "",
+      "cess": "",
+      "grand_total": ""
+    }
+  }

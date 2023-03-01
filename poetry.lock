@@ -39,6 +39,18 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "djangorestframework"
+version = "3.14.0"
+description = "Web APIs for Django, made easy."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+django = ">=3.0"
+pytz = "*"
+
+[[package]]
 name = "psycopg"
 version = "3.1.8"
 description = "PostgreSQL database adapter for Python"
@@ -68,6 +80,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pytz"
+version = "2022.7.1"
+description = "World timezone definitions, modern and historical"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "sqlparse"
 version = "0.4.3"
 description = "A non-validating SQL parser."
@@ -94,14 +114,16 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "919774ad044461a1cc9b2fce0066e69b6fd99923abb07d13efd34318cc8bb5f4"
+content-hash = "8efdd0454a38e37036d0558bcbd5ae3ab024824d583dbe111dbbfb855122bcb6"
 
 [metadata.files]
 asgiref = []
 "backports.zoneinfo" = []
 django = []
+djangorestframework = []
 psycopg = []
 psycopg2-binary = []
+pytz = []
 sqlparse = []
 typing-extensions = []
 tzdata = []
