@@ -2,8 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Order(models.Model):
-    Customer = models.CharField(max_length=50)
+
 
 #TODO: setup forigne keys for  addresss Item
 #TODO: setup proper values need to be fixed need verification 
