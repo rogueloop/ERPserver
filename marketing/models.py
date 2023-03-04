@@ -8,7 +8,9 @@ from django.db import models
 #TODO: setup proper values need to be fixed need verification 
 #TODO: Create smaller table 
 class Marketing(models.Model):
+   
     no = models.CharField(max_length=100)
+    id(no)
     date = models.DateField()
     customer = models.CharField(max_length=100)
     po_no = models.CharField(max_length=100)
@@ -37,7 +39,7 @@ class Marketing(models.Model):
     grand_total = models.DecimalField(max_digits=10, decimal_places=2)
 
 class addresss(models.Model):
-    # marketing = models.ForeignKey(Marketing, on_delete=models.CASCADE)
+    # no = models.ForeignKey(Marketing, on_delete=models.CASCADE)
     org = models.CharField(max_length=255, blank=True)
     addr_line1 = models.CharField(max_length=255, blank=True)
     addr_line2 = models.CharField(max_length=255, blank=True)
@@ -51,7 +53,7 @@ class addresss(models.Model):
         managed = True
         db_table = 'addresss'
 class Item(models.Model):
-    # marketing = models.ForeignKey(Marketing, on_delete=models.CASCADE)
+    # no = models.ForeignKey(Marketing,on_delete=models.CASCADE)
     si_no = models.IntegerField(primary_key=True)
     is_std = models.BooleanField()
     item = models.CharField(max_length=100)
