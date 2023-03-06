@@ -9,8 +9,8 @@ from django.db import models
 #TODO: Create smaller table 
 class Marketing(models.Model):
    
-    no = models.CharField(max_length=100)
-    id(no)
+    no = models.CharField(max_length=100,primary_key=True)
+   
     date = models.DateField()
     customer = models.CharField(max_length=100)
     po_no = models.CharField(max_length=100)

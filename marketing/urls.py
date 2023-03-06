@@ -1,31 +1,12 @@
 from rest_framework import routers
-from django.urls import include, path
-from .views import OrderViewSet,ItemViewSet,AddresssViewset
+from django.urls import include, path,re_path
+from .views import *
 
-marketing_router = routers.SimpleRouter()
 
-marketing_router.register(
-    r'order',
-    OrderViewSet,
-    basename='order',
-    
-)
-marketing_router.register(
-    r'item',
-    ItemViewSet,
-    basename='item',
-    
-)
-marketing_router.register(
-    r'address',
-    AddresssViewset,
-    basename='address',
-    
-)
 
 urlpatterns=[
-    path('/',include(marketing_router.urls)),
+  
  
-    
+    re_path(r'create_order/',students_list)
     
 ]

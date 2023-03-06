@@ -18,7 +18,6 @@ from django.urls import path
 
 from django.urls import path, include  # Ensure `include` is imported
 
-from marketing.views import OrderViewSet,AddresssViewset,ItemViewSet
 
 # Notes router
 
