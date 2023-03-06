@@ -17,13 +17,16 @@ from django.contrib import admin
 from django.urls import path
 
 from django.urls import path, include  # Ensure `include` is imported
-
+from rest_framework.documentation import include_docs_urls # new
+from marketing.views import OrderViewSet,AddresssViewset,ItemViewSet
+from rest_framework.schemas import get_schema_view
 
 # Notes router
-
+schema_view = get_schema_view(title='KEL ERP') 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/marketing', include('marketing.urls'))
-    
+    path('api/marketing', include('marketing.urls')),
+    path('schema/', schema_view),
+    path('docs/', include_docs_urls(title='Kelerp API')), 
 ]

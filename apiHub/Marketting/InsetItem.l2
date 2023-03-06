@@ -1,0 +1,12 @@
+POST
+http://127.0.0.1:8000/marketing/create/
+Content-Type: application/json
+{
+  "consignee_org": "",
+  "consignee_addr_line1": "",
+  "consignee_addr_line2": "",
+  "consignee_addr_line3": "",
+  "consignee_pin": "",
+  "consignee_phone_no": "",
+  "consignee_gst_no": "",
+}
