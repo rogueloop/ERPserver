@@ -8,3 +8,7 @@
     # created different searializer
     
 
+# 7/03/23 [ajmal]
+    # created a deconstruct and json modules
+    # created post function 
+    # partial implemetation of get action

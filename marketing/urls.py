@@ -7,6 +7,6 @@ from .views import *
 urlpatterns=[
   
  
-    re_path(r'create_order/',students_list)
+    re_path(r'create_order/',create_order)
     
 ]
