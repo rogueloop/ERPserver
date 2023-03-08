@@ -1,21 +1,16 @@
 from django.db import models
 
 # Create your models here.
-
-
-
 #TODO: setup forigne keys for  addresss Item
 #TODO: setup proper values need to be fixed need verification 
 #TODO: Create smaller table 
 class Marketing(models.Model):
-   
     no = models.CharField(max_length=100,primary_key=True)
-   
     date = models.DateField()
     customer = models.CharField(max_length=100)
     po_no = models.CharField(max_length=100)
     po_date = models.DateField()
-    item = models.CharField(max_length=100)
+    marketing_item = models.CharField(max_length=100)
     consignee_tel_no = models.CharField(max_length=100)
     buyer_tel_no = models.CharField(max_length=100)
     payment_terms = models.CharField(max_length=100)
@@ -38,8 +33,13 @@ class Marketing(models.Model):
     cess = models.DecimalField(max_digits=10, decimal_places=2)
     grand_total = models.DecimalField(max_digits=10, decimal_places=2)
 
+    class Meta:
+        managed = True
+        db_table = "marketing"
+
 class addresss(models.Model):
     # no = models.ForeignKey(Marketing, on_delete=models.CASCADE)
+    group = models.ForeignKey("Marketing", models.DO_NOTHING,default=None )
     org = models.CharField(max_length=255, blank=True)
     addr_line1 = models.CharField(max_length=255, blank=True)
     addr_line2 = models.CharField(max_length=255, blank=True)
@@ -54,6 +54,7 @@ class addresss(models.Model):
         db_table = 'addresss'
 class Item(models.Model):
     # no = models.ForeignKey(Marketing,on_delete=models.CASCADE)
+    item_group = models.ForeignKey("Marketing", models.DO_NOTHING,default=None)
     si_no = models.IntegerField(primary_key=True)
     is_std = models.BooleanField()
     item = models.CharField(max_length=100)
@@ -69,3 +70,7 @@ class Item(models.Model):
     gross_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
     total_weight = models.DecimalField(max_digits=10, decimal_places=2)
     serial_nos = models.CharField(max_length=100)
+
+    class Meta:
+        managed = True
+        db_table = "item"
