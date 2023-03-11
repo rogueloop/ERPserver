@@ -35,20 +35,7 @@ mkt_keys=["woso_no",
   "special_instruction",
   "despatch_additional_info",
   "note",
-  "remarks",
-  "adv_prr_no",
-  "adv_prr_date",
-  "adv_amount",
-  "adv_mode_of_payment",
-  "adv_purpose",
-  "adv_remarks",
-  "adv_billing_status",
-  "bal_prr_no",
-  "bal_prr_date",
-  "bal_amount",
-  "bal_mode_of_payment",
-  "bal_purpose",
-  "bal_remarks",
-  "bal_billing_status"]
+  "remarks"
+ ]
 
-Dates=["woso_date","po_date","delivery_date","adv_prr_date","bal_prr_date"]
+Dates=["woso_date","po_date","delivery_date"]
