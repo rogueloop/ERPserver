@@ -11,6 +11,7 @@ class Marketing(models.Model):
     po_no = models.CharField(max_length=100)
     po_date = models.DateField()
     marketing_item = models.CharField(max_length=100)
+    marketing_item = models.CharField(max_length=100)
     consignee_tel_no = models.CharField(max_length=100)
     buyer_tel_no = models.CharField(max_length=100)
     payment_terms = models.CharField(max_length=100)
@@ -30,6 +31,10 @@ class Marketing(models.Model):
     def __str__(self):
         return self.no
    
+
+    class Meta:
+        managed = True
+        db_table = "marketing"
 
     class Meta:
         managed = True
