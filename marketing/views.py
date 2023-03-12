@@ -42,7 +42,7 @@ def create_order(request):
                 
                 
                 return HttpResponse(item.errors)
-        
+
         return JsonResponse(str(marketing.data)+str(add_buyer.data)+str(add_consign.data),safe=False)
         
         
@@ -51,26 +51,26 @@ def create_order(request):
 
 @api_view(['GET'])
 def list_order(request):
-    marketing=Marketing.objects.all()
-    mark=MarketingSerializer(marketing,many=True).data
+    all_data=Marketing.objects.all()
+    all_marketing_data=MarketingSerializer(all_data,many=True).data
     result=dict()
-    
-    for i in mark:
-        thing=dict(i)
+    marketting_list = []
+    for i in all_marketing_data:
+        marketting_object=dict(i)
         
         add_buyer=AddressSerializer(addresss.objects.filter(group_id=i['no'],type='buyer'),many=True).data
         add_consign=AddressSerializer(addresss.objects.filter(group_id=i['no'],type='consign'),many=True).data
         
-       
-        thing.update({"buyer_addr":add_buyer})
-        thing.update({"consign_addr":add_consign})
+
+        marketting_object.update({"buyer_addr":add_buyer})
+        marketting_object.update({"consign_addr":add_consign})
         Items=ItemSerializer(Item.objects.filter(item_group=i['no']),many=True).data
-        thing.update({"items":Items})        
+        marketting_object.update({"items":Items})        
     
         
-        result.update({thing['no']:thing})
-        
-    
+
+        marketting_list.append(marketting_object)
+    result.update({"oders":marketting_list})
     # result=marketing+addrs+Items
     return JsonResponse(result,safe=False)
     
