@@ -13,69 +13,115 @@ def create_order(request):
     
     data=Deconstruct(request.data)
     
-    marketing=MarketingSerializer(data=dict(data.marketing()))
+    marketing_instance=MarketingSerializer(data=dict(data.marketing_instance()))
  
-    add_buyer=AddressSerializer(data=data.buyer_addr())
-    add_consign=AddressSerializer(data=data.consign_address())
-    items=data.item_deconstruct()
+    buyer_addrs_instance=AddressSerializer(data=data.buyer_addr())
+    consign_addrs_instance=AddressSerializer(data=data.consign_address())
+    list_of_items=data.item_deconstruct()
      
   
    
-    if marketing.is_valid():
+    if marketing_instance.is_valid():
         
-        marketing.save()
-        if add_buyer.is_valid() and add_consign.is_valid():
+        marketing_instance.save()
+        if buyer_addrs_instance.is_valid() and consign_addrs_instance.is_valid():
             
-            add_buyer.save()
-            add_consign.save()
+            buyer_addrs_instance.save()
+            consign_addrs_instance.save()
         
-        for i in items:
-            d=dict(i)
+        for each_item in list_of_items:
+            item_data=dict(each_item)
 
-            item=ItemSerializer(data=d)
+            item_instance=ItemSerializer(data=item_data)
             
-            if item.is_valid():
+            if item_instance.is_valid():
                 
-                item.save()
+                item_instance.save()
                 
             else:
                 
                 
-                return HttpResponse(item.errors)
-
-        return JsonResponse(str(marketing.data)+str(add_buyer.data)+str(add_consign.data),safe=False)
+                
+                return JsonResponse(str(item_instance.errors),safe=False)
         
+            return JsonResponse(str(marketing_instance.data)+str(buyer_addrs_instance.data)+str(consign_addrs_instance.data),safe=False)
+        return JsonResponse(str(buyer_addrs_instance.errors)+str(consign_addrs_instance.errors),safe=False)
         
             
-    return HttpResponse("ERROR 500")
+    return JsonResponse(str(marketing_instance.errors),safe=False)
 
 @api_view(['GET'])
 def list_order(request):
     all_data=Marketing.objects.all()
     all_marketing_data=MarketingSerializer(all_data,many=True).data
     result=dict()
-    marketting_list = []
-    for i in all_marketing_data:
-        marketting_object=dict(i)
+    marketing_order_list = []
+    for each in all_marketing_data:
+        marketting_object=dict(each)
         
-        add_buyer=AddressSerializer(addresss.objects.filter(group_id=i['no'],type='buyer'),many=True).data
-        add_consign=AddressSerializer(addresss.objects.filter(group_id=i['no'],type='consign'),many=True).data
+        buyer_addrs_instance=AddressSerializer(addresss.objects.filter(group_id=each['no'],type='buyer'),many=True).data
+        consign_addrs_instance=AddressSerializer(addresss.objects.filter(group_id=each['no'],type='consign'),many=True).data
         
 
-        marketting_object.update({"buyer_addr":add_buyer})
-        marketting_object.update({"consign_addr":add_consign})
-        Items=ItemSerializer(Item.objects.filter(item_group=i['no']),many=True).data
+        marketting_object.update({"buyer_addr":buyer_addrs_instance})
+        marketting_object.update({"consign_addr":consign_addrs_instance})
+        Items=ItemSerializer(Item.objects.filter(item_group=each['no']),many=True).data
         marketting_object.update({"items":Items})        
     
         
 
-        marketting_list.append(marketting_object)
-    result.update({"oders":marketting_list})
-    # result=marketing+addrs+Items
+        marketing_order_list.append(marketting_object)
+    result.update({"oders":marketing_order_list})
+    # result=marketing_instance+addrs+Items
     return JsonResponse(result,safe=False)
     
     
+@api_view(['PUT'])
+def update_order(request,pk):
+    all_data=Deconstruct(data=request.data)
+    marketing_object=Marketing.objects(id=pk)
+    buyer_addrs_object=addresss.objects.filter(no= 'key',type='buyer')
+    consign_addrs_object=addresss.objects.filter(no= 'key',type='consign')
+    
+    
+    marketing_instance=MarketingSerializer(instance=marketing_object,data=all_data.marketing())
+ 
+    buyer_addrs_instance=AddressSerializer(instance=buyer_addrs_object,data=all_data.buyer_addr())
+    consign_addrs_instance=AddressSerializer(instance=consign_addrs_object,data=all_data.consign_address())
+    list_of_items=all_data.item_deconstruct()
+    
+    #note
+    #need to change the validator function in the serializer
+    #needed to research
+    
+    
+    if marketing_instance.is_valid():
         
+        marketing_instance.save()
+        if buyer_addrs_instance.is_valid() and consign_addrs_instance.is_valid():
+            
+            buyer_addrs_instance.save()
+            consign_addrs_instance.save()
+        
+        for each_item in list_of_items:
+            item_data=dict(each_item)
+
+            item_instance=ItemSerializer(data=item_data)
+            
+            if item_instance.is_valid():
+                
+                item_instance.save()
+                
+            else:
+                
+                
+                
+                return JsonResponse(str(item_instance.errors),safe=False)
+        
+            return JsonResponse(str(marketing_instance.data)+str(buyer_addrs_instance.data)+str(consign_addrs_instance.data),safe=False)
+        return JsonResponse(str(buyer_addrs_instance.errors)+str(consign_addrs_instance.errors),safe=False)
+    
+    return JsonResponse("ERROR 500 BAD REQUEST",safe=False)
     
         
     

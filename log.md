@@ -12,3 +12,8 @@
     # created a deconstruct and json modules
     # created post function 
     # partial implemetation of get action
+
+# 13/03/23 [ajmal] 12:33 AM
+    # renamed variables in get and post api in [marketing]
+    # created planning app
+    # started implementation of update functions

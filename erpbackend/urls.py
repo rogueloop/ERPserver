@@ -29,4 +29,5 @@ urlpatterns = [
     path('api/marketing', include('marketing.urls')),
     path('schema/', schema_view),
     path('docs/', include_docs_urls(title='Kelerp API')), 
+    path('api/planning',include('planning.urls'))
 ]

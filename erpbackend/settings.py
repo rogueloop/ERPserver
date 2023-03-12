@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'marketing.apps.MarketingConfig',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'planning'
 
 ]
 CORS_ORIGIN_ALLOW_ALL =True
