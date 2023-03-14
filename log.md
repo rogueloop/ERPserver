@@ -17,3 +17,7 @@
     # renamed variables in get and post api in [marketing]
     # created planning app
     # started implementation of update functions
+
+# 14/03/23 [ajmal] 8:22 PM
+    # completed the implementations of update and deletion function not tested but needed to make changes
+    # made corrections in the model and removed the duplicates
