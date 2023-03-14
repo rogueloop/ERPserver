@@ -8,33 +8,30 @@ class Marketing(models.Model):
     no = models.CharField(max_length=100,primary_key=True)
     date = models.DateField()
     customer = models.CharField(max_length=100)
-    po_no = models.CharField(max_length=100)
+    po_no = models.CharField(max_length=100,blank=True)
     po_date = models.DateField()
     marketing_item = models.CharField(max_length=100)
-    marketing_item = models.CharField(max_length=100)
-    consignee_tel_no = models.CharField(max_length=100)
-    buyer_tel_no = models.CharField(max_length=100)
-    payment_terms = models.CharField(max_length=100)
-    paying_authority = models.CharField(max_length=100)
-    penalty_clause = models.CharField(max_length=100)
-    insurance = models.CharField(max_length=100)
-    delivery_date = models.DateField()
-    delivery_place = models.CharField(max_length=100)
-    freight = models.CharField(max_length=100)
-    mode_of_despatch = models.CharField(max_length=100)
-    inspection = models.CharField(max_length=100)
-    special_instruction = models.CharField(max_length=100)
-    despatch_additional_info = models.CharField(max_length=100)
-    note = models.CharField(max_length=100)
-    remarks = models.CharField(max_length=100)
+    consignee_tel_no = models.CharField(max_length=100,blank=True)
+    buyer_tel_no = models.CharField(max_length=100,blank=True)
+    payment_terms = models.CharField(max_length=100,blank=True)
+    paying_authority = models.CharField(max_length=100,blank=True)
+    penalty_clause = models.CharField(max_length=100,blank=True)
+    insurance = models.CharField(max_length=100,blank=True)
+    delivery_date = models.DateField(blank=True)
+    delivery_place = models.CharField(max_length=100,blank=True)
+    freight = models.CharField(max_length=100,blank=True)
+    mode_of_despatch = models.CharField(max_length=100,blank=True)
+    inspection = models.CharField(max_length=100,blank=True)
+    special_instruction = models.CharField(max_length=100,blank=True)
+    despatch_additional_info = models.CharField(max_length=100,blank=True)
+    note = models.CharField(max_length=100,blank=True)
+    remarks = models.CharField(max_length=100,blank=True)
     
     def __str__(self):
         return self.no
    
 
-    class Meta:
-        managed = True
-        db_table = "marketing"
+    
 
     class Meta:
         managed = True

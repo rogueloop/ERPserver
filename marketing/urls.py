@@ -8,6 +8,8 @@ urlpatterns=[
   
  
     re_path(r'create_order/',create_order),
-    re_path(r'list_order/',list_order)
+    re_path(r'list_order/',list_order),
+    re_path(r'update_order/<int:id>',update_order),
+    re_path(r'delete_order/<int:id>',delete_order)
     
 ]

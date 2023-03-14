@@ -1,7 +1,7 @@
 
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse
-
+from rest_framework import status
 
 
 from rest_framework.decorators import api_view
@@ -29,26 +29,27 @@ def create_order(request):
             buyer_addrs_instance.save()
             consign_addrs_instance.save()
         
-        for each_item in list_of_items:
-            item_data=dict(each_item)
+            for each_item in list_of_items:
+                item_data=dict(each_item)
 
-            item_instance=ItemSerializer(data=item_data)
+                item_instance=ItemSerializer(data=item_data)
             
-            if item_instance.is_valid():
+                if item_instance.is_valid():
                 
-                item_instance.save()
+                    item_instance.save()
                 
-            else:
+                else:
                 
                 
                 
-                return JsonResponse(str(item_instance.errors),safe=False)
+                    return JsonResponse(str(item_instance.errors),safe=False)
         
-            return JsonResponse(str(marketing_instance.data)+str(buyer_addrs_instance.data)+str(consign_addrs_instance.data),safe=False)
+            return JsonResponse(request.data,safe=False,status=status.HTTP_201_CREATED)
+        
         return JsonResponse(str(buyer_addrs_instance.errors)+str(consign_addrs_instance.errors),safe=False)
         
             
-    return JsonResponse(str(marketing_instance.errors),safe=False)
+    return JsonResponse(marketing_instance.errors,status=status.HTTP_400_BAD_REQUEST,safe=False)
 
 @api_view(['GET'])
 def list_order(request):
@@ -78,13 +79,13 @@ def list_order(request):
     
 @api_view(['PUT'])
 def update_order(request,pk):
-    all_data=Deconstruct(data=request.data)
-    marketing_object=Marketing.objects(id=pk)
-    buyer_addrs_object=addresss.objects.filter(no= 'key',type='buyer')
-    consign_addrs_object=addresss.objects.filter(no= 'key',type='consign')
+    all_data=Deconstruct(data=request.data) #data
+    marketing_object_to_update=Marketing.objects(id=pk) #marketing instance
+    buyer_addrs_object=addresss.objects.filter(group_id= 'key',type='buyer')
+    consign_addrs_object=addresss.objects.filter(group_id= 'key',type='consign')
     
     
-    marketing_instance=MarketingSerializer(instance=marketing_object,data=all_data.marketing())
+    marketing_instance=MarketingSerializer(instance=marketing_object_to_update,data=all_data.marketing())
  
     buyer_addrs_instance=AddressSerializer(instance=buyer_addrs_object,data=all_data.buyer_addr())
     consign_addrs_instance=AddressSerializer(instance=consign_addrs_object,data=all_data.consign_address())
@@ -92,10 +93,10 @@ def update_order(request,pk):
     
     #note
     #need to change the validator function in the serializer
-    #needed to research
+  
     
     
-    if marketing_instance.is_valid():
+    if marketing_instance.is_valid():   #needed to research
         
         marketing_instance.save()
         if buyer_addrs_instance.is_valid() and consign_addrs_instance.is_valid():
@@ -118,10 +119,22 @@ def update_order(request,pk):
                 
                 return JsonResponse(str(item_instance.errors),safe=False)
         
-            return JsonResponse(str(marketing_instance.data)+str(buyer_addrs_instance.data)+str(consign_addrs_instance.data),safe=False)
+            return JsonResponse(request.data,safe=False)
         return JsonResponse(str(buyer_addrs_instance.errors)+str(consign_addrs_instance.errors),safe=False)
     
-    return JsonResponse("ERROR 500 BAD REQUEST",safe=False)
+    return JsonResponse(marketing_instance.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def delete_order(request,id):
+    Items=Item.objects.filter(item_group=id)
+    Items.delete()
+    addresses=addresss.objects.filter(group_id=id)
+    addresses.delete()
+    marketing_instance=Marketing.objects.filter(no=id)
+    marketing_instance.delete()
+    return JsonResponse({'message': 'Tutorial was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+    
     
         
     
