@@ -21,3 +21,8 @@
 # 14/03/23 [ajmal] 8:22 PM
     # completed the implementations of update and deletion function not tested but needed to make changes
     # made corrections in the model and removed the duplicates
+# 16/03/23 [ajmal] 2:45 PM
+    # created status model and serializer,add_Status,get_status function
+    # made procedure.py file to handle event functions and exception handling
+    # created an end point to retreive the current status of the order by it woso number
+    # made some changes in get and post (get(added status with order) post(insert data into the status table))

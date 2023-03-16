@@ -1,9 +1,9 @@
 
 from django.http import JsonResponse
-from django.shortcuts import HttpResponse
+
 from rest_framework import status
 
-
+from .procedure import get_status,add_status,delete_current_marketing
 from rest_framework.decorators import api_view
 from .models import Marketing,Item,addresss
 from .serializers import MarketingSerializer,ItemSerializer,AddressSerializer
@@ -26,6 +26,7 @@ def create_order(request):
         marketing_instance.save()
         if buyer_addrs_instance.is_valid() and consign_addrs_instance.is_valid():
             
+            
             buyer_addrs_instance.save()
             consign_addrs_instance.save()
         
@@ -39,14 +40,13 @@ def create_order(request):
                     item_instance.save()
                 
                 else:
-                
-                
-                
                     return JsonResponse(str(item_instance.errors),safe=False)
         
             return JsonResponse(request.data,safe=False,status=status.HTTP_201_CREATED)
-        
-        return JsonResponse(str(buyer_addrs_instance.errors)+str(consign_addrs_instance.errors),safe=False)
+        else:
+            delete_current_marketing(request.data["woso_date"])
+            
+            return JsonResponse(str(buyer_addrs_instance.errors + "\n")+str(consign_addrs_instance.errors),status=status.HTTP_400_BAD_REQUEST,safe=False)
         
             
     return JsonResponse(marketing_instance.errors,status=status.HTTP_400_BAD_REQUEST,safe=False)
@@ -67,7 +67,8 @@ def list_order(request):
         marketting_object.update({"buyer_addr":buyer_addrs_instance})
         marketting_object.update({"consign_addr":consign_addrs_instance})
         Items=ItemSerializer(Item.objects.filter(item_group=each['no']),many=True).data
-        marketting_object.update({"items":Items})        
+        marketting_object.update({"items":Items})
+        marketting_object.update({"status":get_status(marketting_object['no'])})        
     
         
 
@@ -81,8 +82,8 @@ def list_order(request):
 def update_order(request,pk):
     all_data=Deconstruct(data=request.data) #data
     marketing_object_to_update=Marketing.objects(id=pk) #marketing instance
-    buyer_addrs_object=addresss.objects.filter(group_id= 'key',type='buyer')
-    consign_addrs_object=addresss.objects.filter(group_id= 'key',type='consign')
+    buyer_addrs_object=addresss.objects.filter(group_id= pk,type='buyer')
+    consign_addrs_object=addresss.objects.filter(group_id= pk,type='consign')
     
     
     marketing_instance=MarketingSerializer(instance=marketing_object_to_update,data=all_data.marketing())
@@ -133,11 +134,16 @@ def delete_order(request,id):
     addresses.delete()
     marketing_instance=Marketing.objects.filter(no=id)
     marketing_instance.delete()
-    return JsonResponse({'message': 'Tutorial was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+    return JsonResponse({'message': 'The order is deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
     
-    
+# the function return the status of the order
+
+@api_view(['GET'])
+def status(pk):
+    return get_status(pk=pk)   
         
     
+
     
     
     
