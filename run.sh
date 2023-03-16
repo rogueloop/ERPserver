@@ -1,5 +1,4 @@
 #!/bin/bash
-cd erpbackend
 mkdir -p logs
 poetry shell
 poetry install
