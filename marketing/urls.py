@@ -11,6 +11,6 @@ urlpatterns=[
     re_path(r'list_order/',list_order),
     re_path(r'update_order/<int:pk>',update_order),
     re_path(r'delete_order/<int:pk>',delete_order),
-    re_path(r'get_status/<int:pk>',get_status),
+    re_path(r'get_status/<int:pk>',status),
     
 ]

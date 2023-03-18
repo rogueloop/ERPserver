@@ -16,8 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from django.urls import path, include  # Ensure `include` is imported
-from rest_framework.documentation import include_docs_urls # new
+from django.urls import path, include  # Ensure `include` is imported # new
 
 from rest_framework.schemas import get_schema_view
 
@@ -28,6 +27,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/marketing', include('marketing.urls')),
     path('schema/', schema_view),
-    path('docs/', include_docs_urls(title='Kelerp API')), 
     path('api/planning',include('planning.urls'))
 ]
