@@ -3,64 +3,44 @@ image: python:3.7
 
 variables:
   # Please edit to your GitLab project
-  REPO_NAME: gitlab.com/kelerp/erpbackend
+  REPO_NAME: https://gitlab.com/kelerp/erpbackend.git
   TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
   TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
-  APP_PORT: 8000
+  APP_PORT: 3000
   DOCKER_TLS_CERTDIR: ""
-  GIT_SSL_NO_VERIFY: "1"
+  FF_NETWORK_PER_BUILD: "true"
 
-# The problem is that to be able to use go get, one needs to put
-# the repository in the $GOPATH. So for example if your gitlab domain
-# is gitlab.com, and that your repository is namespace/project, and
-# the default GOPATH being /go, then you'd need to have your
-# repository in /go/src/gitlab.com/namespace/project
-# Thus, making a symbolic link corrects this.
 before_script:
   - echo "Before script!"
 
 stages:
   - dockerize
-  # - deploy_stage
+  - deploy_stage
 
 dockerize:
   stage: dockerize
   only:
-    - main
-  image: docker:20.10.16
-  services:
-    - name: docker:20.10.16
+    - master
+  image: docker:18.09
+  tags:
+    - "chatbot02"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $TAG_COMMIT -t $TAG_LATEST .
     - docker push $TAG_COMMIT
     - docker push $TAG_LATEST
-
-# deploy_stage:
-#   stage: deploy_stage
-#   environment:
-#     name: staging
-#     url: $STAGE_URL/static/swagger-ui.html
-#   only:
-#     - master
-#   image: devth/helm
-#   script:
-#     - kubectl config use-context hexmos/kubeboss:kubeboss00
-#     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.apps.hexmos.com/hexmos/devops/flyweight-helm.git
-#     - helm upgrade --install
-#       --set image.tag=$CI_COMMIT_SHORT_SHA
-#       --set image.repository=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME
-#       --set image.port=$APP_PORT
-#       --set service.port=$APP_PORT
-#       --set name=hexparse
-#       --set env.HTTP_PORT=$APP_PORT
-#       --set env.APP_ENV=dev
-#       --set resources.limits.cpu=10000m
-#       --set resources.limits.memory=1500Mi
-#       --set resources.requests.cpu=500m
-#       --set resources.requests.memory=1024Mi
-#       --set autoscaling.minReplicas=2
-#       --set autoscaling.maxReplicas=2
-#       --namespace default
-#       hexparse
-#       ./flyweight-helm/
+deploy_stage:
+  stage: deploy_stage
+  environment:
+    name: staging
+    url: $STAGE_URL/static/swagger-ui.html
+  tags:
+    - "erpbackend"
+  only:
+    - master
+  image: docker:dind
+  script:
+    - echo "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA"
+    - docker stop erpbackend || true
+    - docker rm -f erpbackend || true
+    - docker run -p 8085:8000 -d --name erpbackend  $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
