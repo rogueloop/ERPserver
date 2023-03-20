@@ -23,7 +23,7 @@ dockerize:
     - main
   image: docker:18.09
   tags:
-    - "chatbot02"
+    - "kelerp"
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $TAG_COMMIT -t $TAG_LATEST .
