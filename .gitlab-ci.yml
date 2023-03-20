@@ -20,7 +20,7 @@ stages:
 dockerize:
   stage: dockerize
   only:
-    - master
+    - main
   image: docker:18.09
   tags:
     - "chatbot02"
