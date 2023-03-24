@@ -26,19 +26,47 @@ class Marketing(models.Model):
     despatch_additional_info = models.CharField(max_length=100,blank=True)
     note = models.CharField(max_length=100,blank=True)
     remarks = models.CharField(max_length=100,blank=True)
-    
+    prr_n= models.CharField(max_length=100,blank=True)
+    prr_dat = models.CharField(max_length=100,blank=True)
+    amount =models.CharField(max_length=100,blank=True)
+    mode_of_paymen =models.CharField(max_length=100,blank=True)
+    purpose =models.CharField(max_length=100,blank=True)
+    prr_remark =models.CharField(max_length=100,blank=True)
+    billing_status = models.CharField(max_length=100,blank=True)
+
+    dispatch_iniitial_date= models.DateField()
+    dispatch_iniitial_remarks=models.CharField(max_length=100,blank=True)
+    dispatch_iniitial_destination=models.CharField(max_length=100,blank=True)
+    dispatch_iniitial_transporter=models.CharField(max_length=100,blank=True)
+    dispatch_iniitial_packing=models.CharField(max_length=100,blank=True)
+    dispatch_iniitial_exp_time=models.CharField(max_length=100,blank=True)
+
+    dispatch_advanced_date=models.DateField()
+    dispatch_advanced_checkpost=models.CharField(max_length=100,blank=True)
+    dispatch_advanced_trns_lr_no=models.CharField(max_length=100,blank=True)
+    dispatch_advanced_trns_lr_date=models.CharField(max_length=100,blank=True)
+    dispatch_advanced_dc_no=models.CharField(max_length=100,blank=True)
+    dispatch_advanced_dc_date=models.CharField(max_length=100,blank=True)
+    dispatch_advanced_lr_no=models.CharField(max_length=100,blank=True)
+    dispatch_advanced_lr_date=models.DateField()
+    dispatch_advanced_vehicel_no=models.CharField(max_length=100,blank=True)
+    dispatch_advanced_remarks=models.CharField(max_length=100,blank=True)
+
+    packing_forwarding_charge =models.CharField(max_length=100,blank=True)
+    freight =models.CharField(max_length=100,blank=True)
+    sub_total =models.CharField(max_length=100,blank=True)
+    tax_gst =models.CharField(max_length=100,blank=True)
+    cess =models.CharField(max_length=100,blank=True)
+    grand_total =models.CharField(max_length=100,blank=True)
+        
     def __str__(self):
-        return self.no
-   
-
-    
-
+            return self.no
     class Meta:
         managed = True
         db_table = "marketing"
 
 class addresss(models.Model):
-    # no = models.ForeignKey(Marketing, on_delete=models.CASCADE)
+    # no = models.ForeignKey(Marketing on_delete=models.CASCADE)
     group = models.ForeignKey("Marketing", models.DO_NOTHING,default=None,related_query_name='group' )
     org = models.CharField(max_length=255, blank=True)
     addr_line1 = models.CharField(max_length=255, blank=True)
@@ -48,6 +76,7 @@ class addresss(models.Model):
     phone_no = models.CharField(max_length=15, blank=True)
     gst_no = models.CharField(max_length=15, blank=True)
     type = models.CharField(max_length=255, blank=True)
+    telephone_no= models.CharField(max_length=15, blank=True)
     
     def __str__(self):
         return self.group
