@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 #TODO: setup forigne keys for  addresss Item
@@ -34,21 +35,21 @@ class Marketing(models.Model):
     prr_remark =models.CharField(max_length=100,blank=True)
     billing_status = models.CharField(max_length=100,blank=True)
 
-    dispatch_iniitial_date= models.DateField()
+    dispatch_iniitial_date= models.DateField(blank=True,default=datetime.date.today)
     dispatch_iniitial_remarks=models.CharField(max_length=100,blank=True)
     dispatch_iniitial_destination=models.CharField(max_length=100,blank=True)
     dispatch_iniitial_transporter=models.CharField(max_length=100,blank=True)
     dispatch_iniitial_packing=models.CharField(max_length=100,blank=True)
     dispatch_iniitial_exp_time=models.CharField(max_length=100,blank=True)
 
-    dispatch_advanced_date=models.DateField()
+    dispatch_advanced_date=models.DateField(blank=True,default=datetime.date.today)
     dispatch_advanced_checkpost=models.CharField(max_length=100,blank=True)
     dispatch_advanced_trns_lr_no=models.CharField(max_length=100,blank=True)
     dispatch_advanced_trns_lr_date=models.CharField(max_length=100,blank=True)
     dispatch_advanced_dc_no=models.CharField(max_length=100,blank=True)
     dispatch_advanced_dc_date=models.CharField(max_length=100,blank=True)
     dispatch_advanced_lr_no=models.CharField(max_length=100,blank=True)
-    dispatch_advanced_lr_date=models.DateField()
+    dispatch_advanced_lr_date=models.DateField(blank=True,default=datetime.date.today)
     dispatch_advanced_vehicel_no=models.CharField(max_length=100,blank=True)
     dispatch_advanced_remarks=models.CharField(max_length=100,blank=True)
 
