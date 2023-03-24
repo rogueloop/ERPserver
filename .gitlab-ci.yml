@@ -1,5 +1,4 @@
-# This file is a template, and might need editing before it works on your project.
-image: python:3.7
+# image: python:3.7
 
 variables:
   # Please edit to your GitLab project
@@ -13,9 +12,9 @@ variables:
 before_script:
   - echo "Before script!"
 
-stages:
-  - dockerize
-  - deploy_stage
+# stages:
+#   - dockerize
+#   - deploy_stage
 
 dockerize:
   stage: dockerize
