@@ -6,10 +6,10 @@ stages:
 dockerize:
   stage: dockerize
   only:
-    - master
+    - main
   image: docker:18.09
   tags:
-    - "chatbot02"
+    - "kelerp"
   #variables:
     #DOCKER_HOST: tcp://docker:2375/
   #services:
