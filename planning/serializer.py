@@ -8,3 +8,6 @@ class StatusSerializer(serializers.ModelSerializer):
         fields = ['work_order_no']
  
  
+class BomSerializer(serializers.ModelSerializer):
+    class Meta:
+        feilds='__all__'

@@ -35,7 +35,9 @@ mkt_keys=["woso_no",
   "special_instruction",
   "despatch_additional_info",
   "note",
-  "remarks"
+  "remarks",
+  "prr_no",
+  "prr_date"
  ]
 
-Dates=["woso_date","po_date","delivery_date"]
+Dates=["woso_date","po_date","delivery_date,prr_date"]
