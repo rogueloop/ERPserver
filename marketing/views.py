@@ -10,15 +10,15 @@ from .serializers import MarketingSerializer,ItemSerializer,AddressSerializer
 from .deconstruct import Deconstruct
 
 #added logger
-import logging 
-logger=logging.getLogger('django')
+
 
 
 
 
 @api_view(['POST'])
 def create_order(request):
-    logger.warning(" enter the create order ")
+    print("enter the post")
+    
     data=Deconstruct(request.data)
     
     marketing_instance=MarketingSerializer(data=dict(data.marketing_instance()))
@@ -56,13 +56,13 @@ def create_order(request):
             
             return JsonResponse(str(buyer_addrs_instance.errors + "\n")+str(consign_addrs_instance.errors),status=status.HTTP_400_BAD_REQUEST,safe=False)
         
-    logger.warning("the post got error "+str(marketing_instance.errors))        
+    print("error in post")
     return JsonResponse(marketing_instance.errors,status=status.HTTP_400_BAD_REQUEST,safe=False)
 
 @api_view(['GET'])
 def list_order(request):
     all_data=Marketing.objects.all()
-    logger.warning(str("some one requested for the data"))
+    print("someone has requested data")
     all_marketing_data=MarketingSerializer(all_data,many=True).data
     result=dict()
     marketing_order_list = []

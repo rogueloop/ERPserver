@@ -37,7 +37,34 @@ mkt_keys=["woso_no",
   "note",
   "remarks",
   "prr_no",
-  "prr_date"
- ]
+  "prr_date",
+   "amount",
+   "mode_of_payment",
+   "purpose",
+   "prr_remarks",
+   "billing_status",
+   "dis_ini_date",
+   "dis_ini_remarks",
+    "dis_ini_destination",
+  "dis_ini_transporter",
+  "dis_ini_packing",
+ "dis_ini_exp_time",
+  "dis_adv_date",
+ "dis_adv_checkpost",
+  "dis_adv_trns_lr_no",
+ "dis_adv_trns_lr_date",
+  "dis_adv_dc_no",
+  "dis_adv_dc_date",
+ "dis_adv_lr_no",
+ "dis_adv_lr_date",
+ "dis_adv_vehicel_no",
+ "dis_adv_remarks",
+  
+ "invoice_date",
+ "invoice_no",
+ "invoice_amount",
+]
 
-Dates=["woso_date","po_date","delivery_date","prr_date"]
+Dates=["woso_date","po_date","delivery_date","prr_date","dis_ini_date","dis_adv_trns_lr_date", "dis_adv_dc_date", "dis_adv_dc_date",
+       "dis_adv_lr_date","invoice_date",
+       ]
