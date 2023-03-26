@@ -4,7 +4,7 @@ from requests import Response
 
 from rest_framework import status
 
-from .procedure import get_status,add_status,delete_current_marketing
+from .procedure import delete_current_model, get_status,add_status,delete_current_marketing
 from rest_framework.decorators import api_view
 from .models import Marketing,Item,addresss
 from .serializers import MarketingSerializer,ItemSerializer,AddressSerializer
@@ -38,22 +38,25 @@ def create_order(request):
             
             buyer_addrs_instance.save()
             consign_addrs_instance.save()
-        
+            flag=False
             for each_item in list_of_items:
                 item_data=dict(each_item)
 
                 item_instance=ItemSerializer(data=item_data)
+                
             
                 if item_instance.is_valid():
                 
                     item_instance.save()
-                
+                    flag=True
                 else:
+                    delete_current_model(request.data["woso_no"],flag=flag)
+                    
                     return JsonResponse(str(item_instance.errors),safe=False)
         
             return JsonResponse(request.data,safe=False,status=status.HTTP_201_CREATED)
         else:
-            delete_current_marketing(request.data["woso_date"])
+            delete_current_marketing(request.data["woso_no"])
             
             return JsonResponse(str(buyer_addrs_instance.errors + "\n")+str(consign_addrs_instance.errors),status=status.HTTP_400_BAD_REQUEST,safe=False)
         
