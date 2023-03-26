@@ -12,6 +12,7 @@ variables:
 
 stages:
   - dockerize
+  - deploy_stage
 
 dockerize:
   stage: dockerize
@@ -29,3 +30,19 @@ dockerize:
     - docker build -t $TAG_COMMIT -t $TAG_LATEST .
     - docker push $TAG_COMMIT
     - docker push $TAG_LATEST
+  
+deploy_stage:
+  stage: deploy_stage
+  environment:
+    name: staging
+    url: $STAGE_URL/static/swagger-ui.html
+  tags:
+    - "kelerp"
+  only:
+    - main
+  image: docker:dind
+  script:
+    - echo "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA"
+    - docker stop erpbackend_app:ctrl || true
+    - docker rm -f erpbackend_app:ctrl || true
+    - docker run -p 8000:8000 -d --name  erpbackend_app:ctrl $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
