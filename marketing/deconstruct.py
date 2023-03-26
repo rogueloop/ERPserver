@@ -57,7 +57,7 @@ class Deconstruct:
             mkt.update({i:self.data[i]})
         
         
-        format_data = "%d-%m-%Y"
+        format_data = "%Y-%m-%d"
         for date in Dates:
             Date=str(mkt[date])
             
