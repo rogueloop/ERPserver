@@ -1,5 +1,6 @@
 
 from django.http import JsonResponse
+from requests import Response
 
 from rest_framework import status
 
@@ -59,7 +60,7 @@ def create_order(request):
     print("error in post")
     message=str(marketing_instance.errors)
     print(marketing_instance.errors)
-    return JsonResponse(message,status=status.HTTP_400_BAD_REQUEST,safe=False)
+    return Response(message,status=status.HTTP_400_BAD_REQUEST,safe=False)
 
 @api_view(['GET'])
 def list_order(request):
