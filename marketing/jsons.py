@@ -63,6 +63,13 @@ mkt_keys=["woso_no",
  "invoice_date",
  "invoice_no",
  "invoice_amount",
+  "total",
+  "packing_forwarding_charge",
+  "freight",
+  "sub_total",
+  "tax_gst",
+  "cess",
+  "grand_total",
 ]
 
 Dates=["woso_date","po_date","delivery_date","prr_date","dis_ini_date","dis_adv_trns_lr_date", "dis_adv_dc_date", "dis_adv_dc_date",

@@ -21,7 +21,7 @@ def create_order(request):
     
     data=Deconstruct(request.data)
     
-    marketing_instance=MarketingSerializer(data=dict(data.marketing_instance()))
+    marketing_instance=MarketingSerializer(data=dict(data.marketing()))
  
     buyer_addrs_instance=AddressSerializer(data=data.buyer_addr())
     consign_addrs_instance=AddressSerializer(data=data.consign_address())
