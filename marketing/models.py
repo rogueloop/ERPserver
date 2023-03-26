@@ -7,10 +7,10 @@ import datetime
 #TODO: Create smaller table 
 class Marketing(models.Model):
     no = models.CharField(max_length=100,primary_key=True)
-    date = models.DateField()
+    date = models.DateField(blank=True)
     customer = models.CharField(max_length=100)
     po_no = models.CharField(max_length=100,blank=True)
-    po_date = models.DateField()
+    po_date = models.DateField(blank=True)
     marketing_item = models.CharField(max_length=100)
     consignee_tel_no = models.CharField(max_length=100,blank=True)
     buyer_tel_no = models.CharField(max_length=100,blank=True)
