@@ -37,7 +37,7 @@ deploy_stage:
     name: staging
     url: $STAGE_URL/static/swagger-ui.html
   tags:
-    - "chatbot02"
+    - "kelerp"
   only:
     - master
   image: docker:dind
