@@ -43,6 +43,6 @@ deploy_stage:
   image: docker:dind
   script:
     - echo "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA"
-    - docker stop erpbackend_app:ctrl || true
-    - docker rm -f erpbackend_app:ctrl || true
-    - docker run -p 8000:8000 -d --name  erpbackend_app:ctrl $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+    - docker stop erpbackend_app || true
+    - docker rm -f erpbackend_app || true
+    - docker run -p 8000:8000 -d --name  erpbackend_app $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
