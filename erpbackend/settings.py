@@ -149,6 +149,13 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+    
+    'DATE_INPUT_FORMATS': ["%Y-%m-%d", ],
+    'DATETIME_FORMAT': '%Y-%m-%d %H',
+    'DATE_FORMAT': '%Y-%m-%d'
+    
+    
+    
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     # 'DEFAULT_PERMISSION_CLASSES': [
