@@ -12,6 +12,7 @@ variables:
 
 stages:
   - dockerize
+  - deploy_stage
 
 dockerize:
   stage: dockerize
