@@ -56,13 +56,7 @@ class Deconstruct:
         for i in mkt_keys:
             mkt.update({i:self.data[i]})
         
-        
-        format_data = "%Y-%m-%d"
-        for date in Dates:
-            Date=str(mkt[date])
-            
-            d=datetime.strptime(Date,format_data)
-            mkt[date]=str(d.strftime("%Y-%m-%d"))
+       
         mkt['no']=mkt.pop('woso_no')
         mkt['date']=mkt.pop('woso_date')
         mkt['marketing_item']=mkt.pop('item')
