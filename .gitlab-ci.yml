@@ -9,7 +9,7 @@ dockerize:
     - main
   image: docker:18.09
   tags:
-    - "kelerp"
+    - "runner on aws"
   #variables:
     #DOCKER_HOST: tcp://docker:2375/
   #services:
