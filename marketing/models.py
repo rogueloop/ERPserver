@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 import datetime
 
@@ -10,7 +11,7 @@ class Marketing(models.Model):
     date = models.DateField(blank=True)
     customer = models.CharField(max_length=100)
     po_no = models.CharField(max_length=100,blank=True)
-    po_date = models.DateField(blank=True,null=True,format='%y-%m-%d')
+    po_date = models.DateField(blank=True,null=True,)
     marketing_item = models.CharField(max_length=100)
     consignee_tel_no = models.CharField(max_length=100,blank=True)
     buyer_tel_no = models.CharField(max_length=100,blank=True)
@@ -18,7 +19,7 @@ class Marketing(models.Model):
     paying_authority = models.CharField(max_length=100,blank=True)
     penalty_clause = models.CharField(max_length=100,blank=True)
     insurance = models.CharField(max_length=100,blank=True)
-    delivery_date = models.DateField(blank=True,format='%y-%m-%d',null=True)
+    delivery_date = models.DateField(blank=True,null=True)
     delivery_place = models.CharField(max_length=100,blank=True)
     freight = models.CharField(max_length=100,blank=True)
     mode_of_despatch = models.CharField(max_length=100,blank=True)
@@ -88,21 +89,21 @@ class addresss(models.Model):
 class Item(models.Model):
     # no = models.ForeignKey(Marketing,on_delete=models.CASCADE)
     item_group = models.ForeignKey("Marketing", models.DO_NOTHING,default=None,related_query_name='item_group')
-    si_no = models.IntegerField(primary_key=False)
-    is_std = models.BooleanField()
-    item = models.CharField(max_length=100)
-    rating = models.CharField(max_length=100)
-    quantity = models.IntegerField()
-    unit = models.CharField(max_length=100)
-    model = models.CharField(max_length=100)
-    wo_nos = models.CharField(max_length=100)
-    basic_rate = models.DecimalField(max_digits=10, decimal_places=2)
-    basic_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    dp = models.DecimalField(max_digits=10, decimal_places=2)
-    net_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
-    gross_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
-    total_weight = models.DecimalField(max_digits=10, decimal_places=2)
-    serial_nos = models.CharField(max_length=100)
+    si_no = models.IntegerField(primary_key=False,blank=True)
+    is_std = models.BooleanField(blank=True)
+    item = models.CharField(max_length=100,blank=True)
+    rating = models.CharField(max_length=100,blank=True)
+    quantity = models.IntegerField(blank=True)
+    unit = models.CharField(max_length=100,blank=True)
+    model = models.CharField(max_length=100,blank=True)
+    wo_nos = models.CharField(max_length=100,blank=True)
+    basic_rate = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
+    basic_amount = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
+    dp = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
+    net_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
+    gross_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
+    total_weight = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
+    serial_nos = models.CharField(max_length=100,blank=True)
 
     def __str__(self):
         return self.item_group

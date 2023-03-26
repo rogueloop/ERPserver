@@ -26,6 +26,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['kelerp.onrender.com']
 
+DATE_INPUT_FORMATS = ["%Y-%m-%d"]
+USE_L10N = False
 
 # Application definition
 
