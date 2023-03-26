@@ -97,12 +97,12 @@ class Item(models.Model):
     unit = models.CharField(max_length=100,blank=True)
     model = models.CharField(max_length=100,blank=True)
     wo_nos = models.CharField(max_length=100,blank=True)
-    basic_rate = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
-    basic_amount = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
-    dp = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
-    net_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
-    gross_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
-    total_weight = models.DecimalField(max_digits=10, decimal_places=2,blank=True)
+    basic_rate = models.DecimalField(max_digits=10, decimal_places=2,blank=True,default=0)
+    basic_amount = models.DecimalField(max_digits=10, decimal_places=2,blank=True,default=0)
+    dp = models.DecimalField(max_digits=10, decimal_places=2,blank=True,default=0)
+    net_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2,blank=True,default=0)
+    gross_weight_per_unit = models.DecimalField(max_digits=10, decimal_places=2,blank=True,default=0)
+    total_weight = models.DecimalField(max_digits=10, decimal_places=2,blank=True,default=0)
     serial_nos = models.CharField(max_length=100,blank=True)
 
     def __str__(self):
