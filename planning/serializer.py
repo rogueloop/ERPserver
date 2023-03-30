@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Status
+from .models import Status, Bom
 
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,4 +10,5 @@ class StatusSerializer(serializers.ModelSerializer):
  
 class BomSerializer(serializers.ModelSerializer):
     class Meta:
-        feilds='__all__'
+        model=Bom
+        fields = '__all__'
