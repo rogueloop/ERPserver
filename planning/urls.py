@@ -5,7 +5,9 @@ from .views import *
 
 
 urlpatterns=[
-  re_path(r'list_bom',list_bom)
+  re_path(r'list_bom',list_bom),
+  re_path(r'list_product',list_product),
+  re_path(r'list_materials',list_materials)
  
   
     

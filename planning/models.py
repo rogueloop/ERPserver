@@ -65,3 +65,22 @@ class Bom(models.Model):
     class Meta:
         managed = True
         db_table = 'bom'
+
+class Product(models.Model):
+    productid = models.CharField(primary_key=True, max_length=10)
+    ssrl = models.CharField(max_length=2, blank=True, null=True)
+    submited = models.BooleanField(blank=True, null=True)
+    productname = models.CharField(max_length=50, blank=True, null=True)
+    db = models.BooleanField(blank=True, null=True)
+    saeid = models.CharField(max_length=5, blank=True, null=True)
+    taxid = models.CharField(max_length=5, blank=True, null=True)
+    model = models.CharField(max_length=15, blank=True, null=True)
+    netwt = models.CharField(max_length=10, blank=True, null=True)
+    grosswt = models.CharField(max_length=10, blank=True, null=True)
+    partno = models.CharField(max_length=15, blank=True, null=True)
+    standard = models.BooleanField(blank=True, null=True)
+    bpcode = models.CharField(max_length=8, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'product'
