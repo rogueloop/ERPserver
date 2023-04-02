@@ -27,5 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/marketing', include('marketing.urls')),
     path('schema/', schema_view),
-    path('api/planning/',include('planning.urls'))
+    path('api/planning/',include('planning.urls')),
+    path("", include("loginManager.urls")),
 ]

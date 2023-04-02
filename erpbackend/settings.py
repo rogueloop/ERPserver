@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-b6r@n!oz#9x0+w2i&_5pwgu=3krxeddl3jg$+_$p88do(=b#s9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['kelerp.onrender.com','3.110.28.84','127.0.0.1']
+ALLOWED_HOSTS = ['kelerp.onrender.com','3.110.28.84','127.0.0.1','localhost']
 
 
 USE_L10N = False
@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'planning',
-  
-
+    'knox',
 ]
 CORS_ORIGIN_ALLOW_ALL =True
 
@@ -150,14 +149,9 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
-
-    
-    
-    
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-    # ],
-    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'knox.auth.TokenAuthentication',
+    ]
 }
