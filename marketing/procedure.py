@@ -8,8 +8,8 @@ from planning.serializer import StatusSerializer
 
 def get_status(pk):
     try:
-        status=Status.objects.get(id=pk)
-        return status.status
+        status=Status.objects.get(pk=pk)
+        return status
     except Status.DoesNotExist:
         return 0;
     

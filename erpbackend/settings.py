@@ -26,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['kelerp.onrender.com','3.110.28.84','127.0.0.1']
 
-DATE_INPUT_FORMATS = ["%Y-%m-%d"]
+
 USE_L10N = False
 
 # Application definition
@@ -128,8 +128,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
+import os
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -149,10 +150,7 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
-    
-    'DATE_INPUT_FORMATS': ["%Y-%m-%d", ],
-    'DATETIME_FORMAT': '%Y-%m-%d %H',
-    'DATE_FORMAT': '%Y-%m-%d'
+
     
     
     

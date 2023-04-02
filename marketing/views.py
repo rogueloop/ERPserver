@@ -88,7 +88,7 @@ def list_order(request):
         
 
         marketing_order_list.append(marketting_object)
-    result.update({"oders":marketing_order_list})
+    result.update({"orders":marketing_order_list})
     # result=marketing_instance+addrs+Items
     return JsonResponse(result,safe=False)
     
