@@ -8,7 +8,7 @@ urlpatterns=[
   path('list_bom',list_bom),
   path('list_product',list_product),
   path('list_materials',list_materials),
-  path('product/<str:pk>',get_bom)
+  path('get_bom/<str:pk>',get_bom)
 
 
  
