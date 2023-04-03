@@ -26,3 +26,7 @@
     # made procedure.py file to handle event functions and exception handling
     # created an end point to retreive the current status of the order by it woso number
     # made some changes in get and post (get(added status with order) post(insert data into the status table))
+# 3/04/23 [ajmal] 9 PM
+    # created model stock and stock_log
+    # rewrited whole url and get status function 
+    

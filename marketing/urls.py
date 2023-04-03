@@ -1,16 +1,12 @@
-from rest_framework import routers
-from django.urls import include, path,re_path
-from .views import *
+from django.urls import path
+from . import views
 
+app_name = 'marketing'
 
-
-urlpatterns=[
-  
- 
-    re_path(r'create_order/',create_order),
-    re_path(r'list_order/',list_order),
-    re_path(r'update_order/<int:pk>',update_order),
-    re_path(r'delete_order/<int:pk>',delete_order),
-    re_path(r'get_status/<int:pk>',status),
-    
+urlpatterns = [
+    path('create_order/', views.create_order, name='create_order'),
+    path('list_order/', views.list_order, name='list_order'),
+    path('update_order/<str:pk>', views.update_order, name='update_order'),
+    path('delete_order/<str:pk>', views.delete_order, name='delete_order'),
+    path('status/<str:pk>/', views.status, name='status'),
 ]

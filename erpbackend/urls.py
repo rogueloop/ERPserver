@@ -25,7 +25,7 @@ schema_view = get_schema_view(title='KEL ERP')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/marketing', include('marketing.urls')),
+    path('api/marketing/', include('marketing.urls')),
     path('schema/', schema_view),
     path('api/planning/',include('planning.urls')),
     path("", include("loginManager.urls")),

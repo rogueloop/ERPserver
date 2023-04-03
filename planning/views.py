@@ -1,5 +1,6 @@
 
 
+from marketing.procedure import get_status
 from rest_framework.decorators import api_view,APIView
 import psycopg2
 from django.http import JsonResponse
@@ -55,3 +56,9 @@ def get_bom(request,pk):
     
     
     return JsonResponse(result,safe=False)
+@api_view(['GET'])
+def get_stat(request,pk):
+    a=get_status(pk=pk)
+    
+    return Response(a)
+    

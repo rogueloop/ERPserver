@@ -68,7 +68,7 @@ def create_order(request):
 @api_view(['GET'])
 def list_order(request):
     all_data=Marketing.objects.all()
-    print("someone has requested data")
+   
     all_marketing_data=MarketingSerializer(all_data,many=True).data
     result=dict()
     marketing_order_list = []
@@ -92,7 +92,7 @@ def list_order(request):
     # result=marketing_instance+addrs+Items
     return JsonResponse(result,safe=False)
     
-    
+   
 @api_view(['PUT'])
 def update_order(request,pk):
     all_data=Deconstruct(data=request.data) #data
@@ -138,27 +138,25 @@ def update_order(request,pk):
             return JsonResponse(request.data,safe=False)
         return JsonResponse(str(buyer_addrs_instance.errors)+str(consign_addrs_instance.errors),safe=False)
     
-    return JsonResponse(marketing_instance.errors,status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse(marketing_instance.errors,status=status.HTTP_400_BAD_REQUEST) 
 
 
 @api_view(['DELETE'])
-def delete_order(request,id):
-    Items=Item.objects.filter(item_group=id)
+def delete_order(request,pk):
+    Items=Item.objects.filter(item_group=pk)
     Items.delete()
-    addresses=addresss.objects.filter(group_id=id)
+    addresses=addresss.objects.filter(group_id=pk)
     addresses.delete()
-    marketing_instance=Marketing.objects.filter(no=id)
+    marketing_instance=Marketing.objects.filter(no=pk)
     marketing_instance.delete()
-    return JsonResponse({'message': 'The order is deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+    return JsonResponse({'message': 'The order is deleted successfully!'})
     
 # the function return the status of the order
 
 @api_view(['GET'])
-def status(pk):
-    return get_status(pk=pk)   
-        
-    
-
+def status(request,pk):
+    s=get_status(pk=pk)
+    return JsonResponse(s)
     
     
     

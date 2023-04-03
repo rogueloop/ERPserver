@@ -13,13 +13,13 @@ class Status(models.Model):
             (PLANNING_IUSSUE,_("PLANNING DEPARMENT ISSUED A WARNING")),
             (PLANNING_REJECTION,_("PLANNING DEPARMENT HAS REJECTED THE ORDER")))
     
-    work_order_no=models.ForeignKey(Marketing,models.DO_NOTHING,related_query_name='work_order_no')
+    work_order_no=models.OneToOneField(Marketing,models.DO_NOTHING,related_query_name='work_order_no',primary_key=True)
     status=models.PositiveSmallIntegerField(choices=STATUS,default=MARKETING_FINISHED,)
     
 
     class Meta:
         managed=True
-        db_table='Status'
+        db_table='status'
         
 
 class MaterialList(models.Model):
@@ -84,3 +84,27 @@ class Product(models.Model):
     class Meta:
         managed = True
         db_table = 'product'
+
+class Stock(models.Model):
+    matcode=models.OneToOneField(MaterialList,on_delete=models.CASCADE,primary_key=True)
+    qty= models.DecimalField(max_digits=15, decimal_places=3, blank=True,default=0)
+    safe_stock=models.DecimalField(max_digits=15, decimal_places=3, blank=True)
+
+    class Meta:
+        managed = True
+        db_table='stock'
+        
+class Stock_log(models.Model):
+    ADD_OR_CONSUMED=(("ADDED",_("ADDED TO THE STOCK ")),
+            ("CONSUMED",_("TAKEN FROM STOCK")))
+    matcode=models.ForeignKey(MaterialList,on_delete=models.CASCADE)
+    qty= models.DecimalField(max_digits=15, decimal_places=3, blank=True,default=0)
+    Add_or_Cosumed=models.CharField(max_length=20,choices=ADD_OR_CONSUMED)
+    Date=models.DateField(blank=True)
+    gnr_no=models.CharField(max_length=40,blank=True)
+    snr_no=models.CharField(max_length=40,blank=True)
+    remark=models.CharField(max_length=100,blank=True)
+    transaction_id=models.BigAutoField(primary_key=True)
+    class Meta:
+        managed = True
+        db_table='stock_log'

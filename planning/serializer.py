@@ -5,7 +5,7 @@ class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
         
-        fields = ['work_order_no']
+        fields = '__all__'
  
  
 class BomSerializer(serializers.ModelSerializer):

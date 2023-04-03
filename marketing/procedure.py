@@ -8,10 +8,10 @@ from planning.serializer import StatusSerializer
 
 def get_status(pk):
     try:
-        status=Status.objects.get(pk=pk)
-        return status
+        status=Status.objects.get(pk=pk).status
     except Status.DoesNotExist:
-        return 0;
+        return {"error_message":"The order doesnot present in db"}
+    return status
     
 
 
