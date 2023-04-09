@@ -2,12 +2,12 @@
 
 from datetime import timezone
 from marketing.procedure import get_status
-from rest_framework.decorators import api_view
-import psycopg2
+from rest_framework.decorators import api_view,APIView
+
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status,generics
-
+from dateutil import parser
 from planning.procedure import add_stock_log
 
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer
@@ -72,31 +72,55 @@ def get_stat(request,pk):
 
 class AddStockAPI(generics.GenericAPIView):
     serializer_class = Stock_Serializer
+    queryset = Stock.objects.all()
 
+# updating the current stock
     def put(self, request, *args, **kwargs):
         data = request.data
         matcode = data.get('matcode')
         qty = data.get('qty')
-        
         if not matcode or not qty:
             return Response({'Error': 'Missing required field(s)'},
                             status=status.HTTP_400_BAD_REQUEST)
-
         try:
             stock_instance = Stock.objects.get(pk=matcode)
             stock_instance.qty+= int(qty)
             stock_instance.save()
+            date = parser.parse(data.get('Date')).date()
             # assuming add_stock_log is a function that logs the stock addition
             log=add_stock_log({'matcode': matcode, 'qty': qty, 'Add_or_Consumed':"ADDED",
-                           'Date':data.get('Date'),'gnr_no':data.get('gnr_no'),'snr_no':data.get('snr_no'),'remark':data.get('remark')})
+                           'Date':date,'gnr_no':data.get('gnr_no'),'snr_no':data.get('snr_no'),'remark':data.get('remark')})
             return Response({'Success': 'Stock added successfully','log':log},
                             status=status.HTTP_200_OK)
-
         except Stock.DoesNotExist:
             return Response({'Error': 'Stock does not exist'},
                             status=status.HTTP_400_BAD_REQUEST)
+    # adding new element to the stock
+    
     def post(self,request, *args,**kwargs):
         Serializer=self.get_serializer(data=request.data)
         Serializer.is_valid(raise_exception=True)
         Serializer.save()
         return JsonResponse({'success':Serializer.data})
+    # gives the list of stocks of all material 
+    def get(self,request,*args):
+        stock_instance=self.queryset.all()
+        serializer=Stock_Serializer(stock_instance,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+
+class NotifyLimitAPI(APIView):
+    serializer_class = Stock_Serializer
+    queryset = Stock.objects.all()
+    
+    def get(self,request,*args):
+        safe_stock=Stock.objects.values_list('safe_stock',flat=True).first()
+        stock_instance=Stock.objects.filter(qty__lt=safe_stock)
+        serializer=self.serializer_class(stock_instance,many=True)
+        less_stock=[]
+        for item in serializer.data:
+            material_name=MaterialList.objects.get(pk=item['matcode']).title
+            item.update({'name':material_name})
+            less_stock.append(item)
+        return Response({'list':less_stock},status=status.HTTP_200_OK)

@@ -10,7 +10,9 @@ urlpatterns=[
   path('list_materials',list_materials),
   path('get_bom/<str:pk>',get_bom),
   path('get_status/<str:pk>',get_stat),
-  path('add-stock-generic/',AddStockAPI.as_view())
+  path('add-stock-generic/', AddStockAPI.as_view(), name='add_stock_generic'),
+  path('notify_limit/',NotifyLimitAPI.as_view(), name='notify_limit'),
+
 
 
  
