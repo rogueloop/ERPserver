@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from marketing.models import Marketing
+from django.utils import timezone
 # Create your models here.
 
 class Status(models.Model):
@@ -99,11 +100,11 @@ class Stock_log(models.Model):
             ("CONSUMED",_("TAKEN FROM STOCK")))
     matcode=models.ForeignKey(MaterialList,on_delete=models.CASCADE)
     qty= models.DecimalField(max_digits=15, decimal_places=3, blank=True,default=0)
-    Add_or_Cosumed=models.CharField(max_length=20,choices=ADD_OR_CONSUMED)
+    Add_or_Consumed=models.CharField(max_length=20,choices=ADD_OR_CONSUMED)
     Date=models.DateField(blank=True)
-    gnr_no=models.CharField(max_length=40,blank=True)
-    snr_no=models.CharField(max_length=40,blank=True)
-    remark=models.CharField(max_length=100,blank=True)
+    gnr_no=models.CharField(max_length=40,blank=True,null=True)
+    snr_no=models.CharField(max_length=40,blank=True,null=True)
+    remark=models.CharField(max_length=100,blank=True,null=True)
     transaction_id=models.BigAutoField(primary_key=True)
     class Meta:
         managed = True

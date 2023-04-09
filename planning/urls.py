@@ -9,7 +9,8 @@ urlpatterns=[
   path('list_product',list_product),
   path('list_materials',list_materials),
   path('get_bom/<str:pk>',get_bom),
-  path('get_status/<str:pk>',get_stat)
+  path('get_status/<str:pk>',get_stat),
+  path('add-stock-generic/',AddStockAPI.as_view())
 
 
  

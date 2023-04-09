@@ -96,7 +96,7 @@ def list_order(request):
 @api_view(['PUT'])
 def update_order(request,pk):
     all_data=Deconstruct(data=request.data) #data
-    marketing_object_to_update=Marketing.objects(id=pk) #marketing instance
+    marketing_object_to_update=Marketing.objects.get(id=pk) #marketing instance
     buyer_addrs_object=addresss.objects.filter(group_id= pk,type='buyer')
     consign_addrs_object=addresss.objects.filter(group_id= pk,type='consign')
     
@@ -154,7 +154,7 @@ def delete_order(request,pk):
 # the function return the status of the order
 
 @api_view(['GET'])
-def status(request,pk):
+async def status(request,pk):
     s=get_status(pk=pk)
     return JsonResponse(s)
     
