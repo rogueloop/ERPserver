@@ -1,13 +1,12 @@
 
 
-from datetime import timezone
 from marketing.procedure import get_status
 from rest_framework.decorators import api_view,APIView
 
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status,generics
-from dateutil import parser
+from rest_framework.pagination import PageNumberPagination
 from planning.procedure import add_stock_log
 
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer
@@ -34,12 +33,6 @@ def list_product(request):
     
     return JsonResponse(B,safe=False)
 
-@api_view(['get'])
-def list_materials(request):
-    list_=MaterialList.objects.all();
-    B=MaterialSerializer(list_,many=True).data
-    
-    return JsonResponse(B,safe=False)
 
 
 
@@ -86,10 +79,10 @@ class AddStockAPI(generics.GenericAPIView):
             stock_instance = Stock.objects.get(pk=matcode)
             stock_instance.qty+= int(qty)
             stock_instance.save()
-            date = parser.parse(data.get('Date')).date()
+           
             # assuming add_stock_log is a function that logs the stock addition
             log=add_stock_log({'matcode': matcode, 'qty': qty, 'Add_or_Consumed':"ADDED",
-                           'Date':date,'gnr_no':data.get('gnr_no'),'snr_no':data.get('snr_no'),'remark':data.get('remark')})
+                           'Date':data.get('Date'),'gnr_no':data.get('gnr_no'),'snr_no':data.get('snr_no'),'remark':data.get('remark')})
             return Response({'Success': 'Stock added successfully','log':log},
                             status=status.HTTP_200_OK)
         except Stock.DoesNotExist:
@@ -124,3 +117,35 @@ class NotifyLimitAPI(APIView):
             item.update({'name':material_name})
             less_stock.append(item)
         return Response({'list':less_stock},status=status.HTTP_200_OK)
+    
+    
+
+class MyPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
+    
+    
+class Material_API(generics.GenericAPIView):
+    serializer_class =MaterialSerializer 
+    pagination_class =MyPagination
+    
+    queryset = MaterialList.objects.all()
+    def post(self,request, *args,**kwargs):
+        Serializer=self.get_serializer(data=request.data)
+        Serializer.is_valid(raise_exception=True)
+        Serializer.save()
+        return JsonResponse({'success':Serializer.data})
+    def get(self, request, pk=None):
+        
+        if pk:
+            obj= MaterialList.objects.get(pk=pk)
+            serializer =self.get_serializer(obj)
+            return Response(serializer.data)
+        else:
+            page=self.paginate_queryset(self.queryset)
+            if page is not None:
+                serializer=self.get_serializer(page,many=True)
+                return self.get_paginated_response(serializer.data)
+            serializer=self.get_serializer(self.queryset,many=True)
+            return Response(serializer.data)
