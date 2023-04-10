@@ -1,68 +1,72 @@
-
-
-from marketing.procedure import get_status
 from rest_framework.decorators import api_view,APIView
-
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status,generics
 from rest_framework.pagination import PageNumberPagination
 from planning.procedure import add_stock_log
-
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer
 from .models import Bom, MaterialList, Product, Stock
 # Create your views here.
-@api_view(['get'])
-def list_bom(request):
-    list_=Bom.objects.all();
-    B=BomSerializer(list_,many=True).data
-    bom_list=[]
-    result=dict()
-    for each in B:
-        
-        bom_list.append(each)
-    result.update({'Bom':bom_list})
-        
-        
-    return JsonResponse(result,safe=False)
 
-@api_view(['get'])
-def list_product(request):
-    list_=Product.objects.all();
-    B=Product_Serializer(list_,many=True).data
+class MyPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
+class Product_API_View(APIView):
+    serializer_class=Product_Serializer
+    queryset=Product.objects.all()
     
-    return JsonResponse(B,safe=False)
+    def get(self,request,pk=None):
+        try:
+            if pk:
+                obj= Product.objects.get(pk=pk)
+                serializer =self.serializer_class(obj)
+                return Response(serializer.data)
+        except Product.DoesNotExist:
+            return Response({'message':str(Product.DoesNotExist)},status=status.HTTP_404_NOT_FOUND)
+        else:
+            paginator = MyPagination()
+            page = paginator.paginate_queryset(self.queryset.all(), request)
+            
+            if page is not None:
+                
+                serializer=self.serializer_class(page,many=True)
+                return paginator.get_paginated_response(serializer.data)
+            else:
+                serializer=self.serializer_class(self.queryset.all(),many=True)
+                return Response(serializer.data)
+
+    def post(self, request, *args):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class Bom_API_View(APIView):
+    serializer_class=BomSerializer
 
-
-@api_view(['GET'])
-def get_bom(request,pk):
-    try:
-        product=Product.objects.get(pk=pk)
-    except Product.DoesNotExist:
-        return JsonResponse("The product does not exist",status=status.HTTP_400_BAD_REQUEST)
-    serialzer=Product_Serializer(product,many=False).data
-    bom=BomSerializer(Bom.objects.filter(bpcode__exact=str(serialzer['bpcode'])),many=True).data
-    items=[]
-    for each_item in bom:
-        each=dict(each_item)
-        material=MaterialSerializer(MaterialList.objects.get(pk=each_item['matcode']),many=False).data
-        each_item.update({'title':material['title']})
-        items.append(each_item)
-    result={serialzer['productname']:items}
-    return JsonResponse(result,safe=False)
-
-
-
-
-
-@api_view(['GET'])
-def get_stat(request,pk):
-    a=get_status(pk=pk)
     
-    return Response(a)
-
+    def get(self,request,pk):
+        try:
+            product=Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
+            return Response({'Error_message':"The product does not exist"},status=status.HTTP_400_BAD_REQUEST)
+        serialzer=Product_Serializer(product,many=False).data
+        bom=self.serializer_class(Bom.objects.filter(bpcode__exact=str(serialzer['bpcode'])),many=True).data
+        items=[]
+        for each_item in bom:
+            each=dict(each_item)
+            material=MaterialSerializer(MaterialList.objects.get(pk=each_item['matcode']),many=False).data
+            each_item.update({'title':material['title']})
+            items.append(each_item)
+        result={serialzer['productname']:items}
+        return Response(result)
+    
 class AddStockAPI(generics.GenericAPIView):
     serializer_class = Stock_Serializer
     queryset = Stock.objects.all()
@@ -120,10 +124,7 @@ class NotifyLimitAPI(APIView):
     
     
 
-class MyPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 10000
+
     
     
 class Material_API(generics.GenericAPIView):
@@ -136,8 +137,9 @@ class Material_API(generics.GenericAPIView):
         Serializer.is_valid(raise_exception=True)
         Serializer.save()
         return JsonResponse({'success':Serializer.data})
-    def get(self, request, pk=None):
-        
+    
+    
+    def get(self, request, pk=None):  
         if pk:
             obj= MaterialList.objects.get(pk=pk)
             serializer =self.get_serializer(obj)
