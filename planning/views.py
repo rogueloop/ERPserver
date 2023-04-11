@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status,generics
 from rest_framework.pagination import PageNumberPagination
-from planning.procedure import add_stock_log
+from planning.procedure import add_stock_log, get_excel
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer
 from .models import Bom, MaterialList, Product, Stock
 # Create your views here.
@@ -151,3 +151,19 @@ class Material_API(generics.GenericAPIView):
                 return self.get_paginated_response(serializer.data)
             serializer=self.get_serializer(self.queryset,many=True)
             return Response(serializer.data)
+
+@api_view(['GET'])
+def get_file(request,pk):
+    
+    try:
+        product=Product.objects.get(pk=pk)
+    except Product.DoesNotExist:
+        return Response({'Error_message':"The product does not exist"},status=status.HTTP_400_BAD_REQUEST)
+    serialzer=Product_Serializer(product,many=False).data
+    bom=BomSerializer(Bom.objects.filter(bpcode__exact=str(serialzer['bpcode'])),many=True).data
+    items=[]
+    for each_item in bom:
+        material=MaterialSerializer(MaterialList.objects.get(pk=each_item['matcode']),many=False).data
+        each_item.update({'title':material['title']})
+        items.append(each_item)
+    return get_excel(data=items,name=product.productname)
