@@ -14,9 +14,4 @@ urlpatterns=[
   path('add-stock-generic/', AddStockAPI.as_view(), name='add_stock_generic'),
   path('notify_limit/',NotifyLimitAPI.as_view(), name='notify_limit'),
 
-
-
- 
-  
-    
 ]

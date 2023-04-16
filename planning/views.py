@@ -41,7 +41,7 @@ def get_bom(request,pk):
     try:
         product=Product.objects.get(pk=pk)
     except Product.DoesNotExist:
-        return JsonResponse("The product does not exist",status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse("The product does not exist",status=status.HTTP_400_BAD_REQUEST,safe=False)
     serialzer=Product_Serializer(product,many=False).data
     bom=BomSerializer(Bom.objects.filter(bpcode__exact=str(serialzer['bpcode'])),many=True).data
     items=[]
