@@ -143,15 +143,16 @@ DATABASES = {
         'NAME': 'kelerp', 
         'USER': 'postgres', 
         'PASSWORD': 'post123',
-        'HOST': '3.110.28.84', 
+        'HOST': '65.1.131.141', 
         'PORT': '5432',
     }
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
         'knox.auth.TokenAuthentication',
     ]
 }
+
+
+# psql -h 65.1.131.141  -p 5432 -U postgres
