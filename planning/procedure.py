@@ -22,11 +22,11 @@ def add_stock_log(verified_data):
     except ValidationError as e:
         return {'error': str(e)},
 
+
+# the below function accepts param_list of data and param_file_name and turn it into a excel and return to client side
+
+
 def get_excel(data, name):
-    
-    if len(data) == 0:
-        return Response('There is no bom for this product id', status=400)
-    
     
     wb = openpyxl.Workbook()
     ws = wb.active

@@ -100,7 +100,7 @@ class AddStockAPI(generics.GenericAPIView):
             stock_instance.qty += int(qty)
             stock_instance.save()
 
-            # assuming add_stock_log is a function that logs the stock addition
+            #  add_stock_log is a function that logs the stock addition
             log = add_stock_log({'matcode': matcode, 'qty': qty, 'Add_or_Consumed': "ADDED",
                                  'Date': data.get('Date'), 'gnr_no': data.get('gnr_no'), 'snr_no': data.get('snr_no'), 'remark': data.get('remark')})
             return Response({'Success': 'Stock added successfully', 'log': log},
@@ -174,8 +174,10 @@ def get_file(request, pk):
     except Product.DoesNotExist:
         return Response({'Error_message': "The product does not exist"}, status=status.HTTP_400_BAD_REQUEST)
     serialzer = Product_Serializer(product, many=False).data
-    bom = BomSerializer(Bom.objects.filter(
-        bpcode__exact=str(serialzer['bpcode'])), many=True).data
+    
+    bom = BomSerializer(Bom.objects.filter( bpcode__exact=str(serialzer['bpcode'])), many=True).data
+    if len(bom) ==0:
+        return Response("There not exist any bom for this product",status=status.HTTP_400_BAD_REQUEST)
     items = []
     for each_item in bom:
         material = MaterialSerializer(MaterialList.objects.get(
