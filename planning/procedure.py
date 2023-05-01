@@ -1,5 +1,5 @@
 import io
-
+from rest_framework.response import Response
 from django.forms import ValidationError
 from planning.models import Stock_log
 from planning.serializer import Stock_log_Serializer   
@@ -23,6 +23,11 @@ def add_stock_log(verified_data):
         return {'error': str(e)},
 
 def get_excel(data, name):
+    
+    if len(data) == 0:
+        return Response('There is no bom for this product id', status=400)
+    
+    
     wb = openpyxl.Workbook()
     ws = wb.active
 
