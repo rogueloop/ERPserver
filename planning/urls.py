@@ -13,6 +13,9 @@ urlpatterns=[
   path('Stock_api/', AddStockAPI.as_view(), name='Stock_api'),
   path('notify_limit/',NotifyLimitAPI.as_view(), name='notify_limit'),
   path('get_bom_excel/<str:pk>/',get_file),
-  path('product_suggestions/',product_suggestions)
+  path('product_suggestions/',product_suggestions),
+  path('pi_api/',Pr_Api.as_view()),
+  path('pi_api/<int:pk>', Pr_Api.as_view())
+ 
 
 ]

@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.pagination import PageNumberPagination
 from planning.procedure import add_stock_log, get_excel
-from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer
-from .models import Bom, MaterialList, Product, Stock
+from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer
+from .models import Bom, MaterialList, Product, Stock,Prdetail
 # Create your views here.
 
 
@@ -192,3 +192,23 @@ def product_suggestions(request):
     data=Product.objects.all().values('productid','productname')
 
     return Response({"Product_ids":data},status=status.HTTP_200_OK)
+
+class Pr_Api(APIView):
+    serializer_class=Pr_Serializer
+    objects=Prdetail.objects.all()
+    
+    def get(self, request, pk=None):
+        if pk:
+            obj = Prdetail.objects.get(pk=pk)
+            serializer = self.serializer_class(obj,many=False)
+            return Response({"successfully retrived":serializer.data},status=status.HTTP_200_OK)
+        else:
+            serializer=self.serializer_class(self.objects,many=True)
+            return Response({"PR_list":serializer.data},status=status.HTTP_200_OK)
+    def post(self,request):
+        serializer=self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"successfully pi created":serializer.data},status=status.HTTP_201_CREATED)
+        return Response({"error_occured":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+        
