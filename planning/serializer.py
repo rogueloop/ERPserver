@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Status, Bom,MaterialList,Product, Stock, Stock_log
+from .models import Prdetail, Prdetaillog, Status, Bom,MaterialList,Product, Stock, Stock_log
 
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,3 +45,15 @@ class Stock_log_Serializer(serializers.ModelSerializer):
     class Meta:
         model=Stock_log
         fields = ['matcode', 'qty', 'Add_or_Consumed', 'Date', 'gnr_no', 'snr_no', 'remark']
+        
+class Pr_Serializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model= Prdetail
+        fields='__all__'
+
+class Prlog_Serializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model =Prdetaillog
+        fields='__all__'
