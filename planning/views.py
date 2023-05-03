@@ -81,7 +81,18 @@ class Bom_API_View(APIView):
             items.append(each_item)
         result = {serialzer['productname']: items}
         return Response(result)
-
+    # #experimental feature
+    # def put(self,request,pk):
+    #     try:
+    #         product = Product.objects.get(pk=pk)
+    #     except Product.DoesNotExist:
+    #         return Response({'Error_message': "The product does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+    #     deleted_material=request.data['deleted_list']
+    #     newly_added_material=request.data['newly_added_list']
+    #     if len(deleted_material !=0):
+    #         for i in deleted_material:
+                
+    #     if len(newly_added_material !=0):
 
 class AddStockAPI(generics.GenericAPIView):
     serializer_class = Stock_Serializer
