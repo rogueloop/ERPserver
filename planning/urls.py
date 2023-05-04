@@ -16,6 +16,7 @@ urlpatterns=[
   path('product_suggestions/',product_suggestions),
   path('pi_api/',Pr_Api.as_view()),
   path('pi_api/<int:pk>', Pr_Api.as_view())
+  
  
 
 ]

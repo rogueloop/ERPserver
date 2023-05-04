@@ -16,11 +16,12 @@ from django.http import FileResponse, HttpResponse
 def add_stock_log(verified_data):
     Stock_log_instance=Stock_log_Serializer(data=verified_data)
     try:
+        print("inside the log")
         Stock_log_instance.is_valid(raise_exception=True)
         Stock_log_instance.save()
         return Stock_log_instance.data
     except ValidationError as e:
-        return {'error': str(e)},
+        return Response({'error': str(e)})
 
 
 # the below function accepts param_list of data and param_file_name and turn it into a excel and return to client side

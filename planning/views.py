@@ -113,7 +113,7 @@ class AddStockAPI(generics.GenericAPIView):
 
             #  add_stock_log is a function that logs the stock addition
             log = add_stock_log({'matcode': matcode, 'qty': qty, 'Add_or_Consumed': "ADDED",
-                                 'Date': data.get('Date'), 'gnr_no': data.get('gnr_no'), 'snr_no': data.get('snr_no'), 'remark': data.get('remark')})
+                                 'Date': data.get('Date'), 'gnr_no': data.get('grn_no'), 'srn_no': data.get('snr_no'), 'remark': data.get('remark')})
             return Response({'Success': 'Stock added successfully', 'log': log},
                             status=status.HTTP_200_OK)
         except Stock.DoesNotExist:
@@ -222,4 +222,3 @@ class Pr_Api(APIView):
             serializer.save()
             return Response({"successfully pi created":serializer.data},status=status.HTTP_201_CREATED)
         return Response({"error_occured":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
-        
