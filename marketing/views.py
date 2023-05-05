@@ -1,164 +1,63 @@
-
-from django.http import JsonResponse
-from requests import Response
-
-from rest_framework import status
-
-from .procedure import delete_current_model, get_status,add_status,delete_current_marketing
-from rest_framework.decorators import api_view
-from .models import Marketing,Item,addresss
-from .serializers import MarketingSerializer,ItemSerializer,AddressSerializer
-from .deconstruct import Deconstruct
-
-#added logger
+from rest_framework import status,generics
+from .models import Marketing, Item, addresss
+from .serializers import MarketingSerializer, ItemSerializer, AddressSerializer
+from planning.models import Status
+from rest_framework.response import Response
+from planning.serializer import StatusSerializer
 
 
+class MarketingListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Marketing.objects.all()
+    serializer_class = MarketingSerializer
 
-
-
-@api_view(['POST'])
-def create_order(request):
-    print("enter the post")
-    
-    data=Deconstruct(request.data)
-    
-    marketing_instance=MarketingSerializer(data=dict(data.marketing()))
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        marketing_instance = serializer.save()
+        status_instance = Status.objects.create(work_order_no=marketing_instance)
+        response_data = serializer.data.copy()
+        response_data.update({'status': status_instance.status})
+      
+        return Response(response_data)
  
-    buyer_addrs_instance=AddressSerializer(data=data.buyer_addr())
-    consign_addrs_instance=AddressSerializer(data=data.consign_address())
-    list_of_items=data.item_deconstruct()
-     
-  
-   
-    if marketing_instance.is_valid():
-        
-        marketing_instance.save()
-        if buyer_addrs_instance.is_valid() and consign_addrs_instance.is_valid():
-            
-            
-            buyer_addrs_instance.save()
-            consign_addrs_instance.save()
-            flag=False
-            for each_item in list_of_items:
-                item_data=dict(each_item)
+class MarketingRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Marketing.objects.all()
+    serializer_class = MarketingSerializer
 
-                item_instance=ItemSerializer(data=item_data)
-                
-            
-                if item_instance.is_valid():
-                
-                    item_instance.save()
-                    flag=True
-                else:
-                    delete_current_model(request.data["woso_no"],flag=flag)
-                    
-                    return JsonResponse(str(item_instance.errors),safe=False)
-        
-            return JsonResponse(request.data,safe=False,status=status.HTTP_201_CREATED)
-        else:
-            delete_current_marketing(request.data["woso_no"])
-            
-            return JsonResponse(str(buyer_addrs_instance.errors + "\n")+str(consign_addrs_instance.errors),status=status.HTTP_400_BAD_REQUEST,safe=False)
-        
-    print("error in post")
-    message=str(marketing_instance.errors)
-    print(marketing_instance.errors)
-    return Response(message,status=status.HTTP_400_BAD_REQUEST,safe=False)
+    def get(self,request, *args, **kwargs):
+        marketing_instance = self.get_object()
+        serializer = self.serializer_class(marketing_instance)
+        status_instance = Status.objects.get(work_order_no=marketing_instance)
+        response_data = serializer.data
+        response_data.update({'status': status_instance.status})
+        items = Item.objects.filter(item_group=marketing_instance)
+        items_serializer = ItemSerializer(items, many=True)
+        address=AddressSerializer(addresss.objects.filter(group=marketing_instance),many=True).data
+        response_data.update({'address':address})
+        response_data.update({'items': items_serializer.data})
+        return Response(response_data)
 
-@api_view(['GET'])
-def list_order(request):
-    all_data=Marketing.objects.all()
-   
-    all_marketing_data=MarketingSerializer(all_data,many=True).data
-    result=dict()
-    marketing_order_list = []
-    for each in all_marketing_data:
-        marketting_object=dict(each)
-        
-        buyer_addrs_instance=AddressSerializer(addresss.objects.filter(group_id=each['no'],type='buyer'),many=True).data
-        consign_addrs_instance=AddressSerializer(addresss.objects.filter(group_id=each['no'],type='consign'),many=True).data
-        
-
-        marketting_object.update({"buyer_addr":buyer_addrs_instance})
-        marketting_object.update({"consign_addr":consign_addrs_instance})
-        Items=ItemSerializer(Item.objects.filter(item_group=each['no']),many=True).data
-        marketting_object.update({"items":Items})
-        marketting_object.update({"status":get_status(marketting_object['no'])})        
+class ItemListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
     
-        
-
-        marketing_order_list.append(marketting_object)
-    result.update({"orders":marketing_order_list})
-    # result=marketing_instance+addrs+Items
-    return JsonResponse(result,safe=False)
-    
-   
-@api_view(['PUT'])
-def update_order(request,pk):
-    all_data=Deconstruct(data=request.data) #data
-    marketing_object_to_update=Marketing.objects.get(id=pk) #marketing instance
-    buyer_addrs_object=addresss.objects.filter(group_id= pk,type='buyer')
-    consign_addrs_object=addresss.objects.filter(group_id= pk,type='consign')
-    
-    
-    marketing_instance=MarketingSerializer(instance=marketing_object_to_update,data=all_data.marketing())
- 
-    buyer_addrs_instance=AddressSerializer(instance=buyer_addrs_object,data=all_data.buyer_addr())
-    consign_addrs_instance=AddressSerializer(instance=consign_addrs_object,data=all_data.consign_address())
-    list_of_items=all_data.item_deconstruct()
-    
-    #note
-    #need to change the validator function in the serializer
-  
-    
-    
-    if marketing_instance.is_valid():   #needed to research
-        
-        marketing_instance.save()
-        if buyer_addrs_instance.is_valid() and consign_addrs_instance.is_valid():
-            
-            buyer_addrs_instance.save()
-            consign_addrs_instance.save()
-        
-        for each_item in list_of_items:
-            item_data=dict(each_item)
-
-            item_instance=ItemSerializer(data=item_data)
-            
-            if item_instance.is_valid():
-                
-                item_instance.save()
-                
-            else:
-                
-                
-                
-                return JsonResponse(str(item_instance.errors),safe=False)
-        
-            return JsonResponse(request.data,safe=False)
-        return JsonResponse(str(buyer_addrs_instance.errors)+str(consign_addrs_instance.errors),safe=False)
-    
-    return JsonResponse(marketing_instance.errors,status=status.HTTP_400_BAD_REQUEST) 
 
 
-@api_view(['DELETE'])
-def delete_order(request,pk):
-    Items=Item.objects.filter(item_group=pk)
-    Items.delete()
-    addresses=addresss.objects.filter(group_id=pk)
-    addresses.delete()
-    marketing_instance=Marketing.objects.filter(no=pk)
-    marketing_instance.delete()
-    return JsonResponse({'message': 'The order is deleted successfully!'})
-    
-# the function return the status of the order
+class ItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
 
-@api_view(['GET'])
-async def status(request,pk):
-    s=get_status(pk=pk)
-    return JsonResponse(s)
-    
-    
-    
-    
+
+class AddressListCreateAPIView(generics.ListCreateAPIView):
+    queryset = addresss.objects.all()
+    serializer_class = AddressSerializer
+
+
+class AddressRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = addresss.objects.all()
+    serializer_class = AddressSerializer
+
+class StatusAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Status.objects.all()
+    serializer_class = StatusSerializer
           
