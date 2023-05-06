@@ -15,7 +15,7 @@ class Status(models.Model):
               (PLANNING_REJECTION, _("PLANNING DEPARMENT HAS REJECTED THE ORDER")))
 
     work_order_no = models.OneToOneField(
-        Marketing, models.DO_NOTHING, related_query_name='work_order_no', primary_key=True)
+        Marketing,on_delete=models.CASCADE, related_query_name='work_order_no', primary_key=True)
     status = models.PositiveSmallIntegerField(
         choices=STATUS, default=MARKETING_FINISHED,)
 

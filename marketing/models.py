@@ -69,7 +69,7 @@ class Marketing(models.Model):
 
 class addresss(models.Model):
     # no = models.ForeignKey(Marketing on_delete=models.CASCADE)
-    group = models.ForeignKey("Marketing", models.DO_NOTHING,default=None,related_query_name='group' )
+    group = models.ForeignKey("Marketing", on_delete=models.CASCADE,default=None,related_query_name='group' )
     org = models.CharField(max_length=255, blank=True,null=True)
     address_line_1 = models.CharField(max_length=255, blank=True,null=True)
     address_line_2 = models.CharField(max_length=255, blank=True,null=True)
@@ -88,7 +88,7 @@ class addresss(models.Model):
         db_table = 'addresss'
 class Item(models.Model):
     # no = models.ForeignKey(Marketing,on_delete=models.CASCADE)
-    item_group = models.ForeignKey("Marketing", models.DO_NOTHING,default=None,related_query_name='item_group')
+    item_group = models.ForeignKey("Marketing", on_delete=models.CASCADE,default=None,related_query_name='item_group')
     si_no = models.IntegerField(primary_key=False,blank=True,null=True)
     is_std = models.BooleanField(blank=True,null=True)
     item = models.CharField(max_length=100,blank=True,null=True)

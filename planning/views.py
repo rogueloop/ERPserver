@@ -81,19 +81,32 @@ class Bom_API_View(APIView):
             items.append(each_item)
         result = {serialzer['productname']: items}
         return Response(result)
-    # #experimental feature
-    # def put(self,request,pk):
-    #     try:
-    #         product = Product.objects.get(pk=pk)
-    #     except Product.DoesNotExist:
-    #         return Response({'Error_message': "The product does not exist"}, status=status.HTTP_400_BAD_REQUEST)
-    #     deleted_material=request.data['deleted_list']
-    #     newly_added_material=request.data['newly_added_list']
-    #     if len(deleted_material !=0):
-    #         for i in deleted_material:
-                
-    #     if len(newly_added_material !=0):
+   
+    
+    def post(self,request):
+        data=request.data
 
+        if(Product.objects.filter(productid=data.get('product_id')).exists()):
+            # bill of material (bom)
+           
+            bom_data=list(data.get('bom'))
+            print(bom_data)
+            with transaction.atomic():
+                
+                for material in bom_data:
+                    bom_instance=self.serializer_class(data=material)
+                    bom_instance.is_valid(raise_exception=True)
+                    bom_instance.save()
+            response_data = {'message': 'BOM created successfully'}
+            response_data.update(self.get(request, data.get('product_id')).data)
+            return Response(response_data, status=status.HTTP_201_CREATED)    
+
+        else:
+            return Response("The product is not registered, register the product before adding bom");
+        
+        y
+        
+        
 class AddStockAPI(generics.GenericAPIView):
     serializer_class = Stock_Serializer
     queryset = Stock.objects.all()
