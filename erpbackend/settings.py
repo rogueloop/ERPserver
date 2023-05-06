@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'planning',
     'knox',
+    'notifications'
 ]
 CORS_ORIGIN_ALLOW_ALL =True
 
@@ -140,13 +141,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'kelerp', 
-        'USER': 'postgres', 
-        'PASSWORD': 'post123',
-        'HOST': '65.1.131.141', 
-        'PORT': '5432',
+        'NAME': 'kel_erp',
+        'USER': 'postgres',
+        'PASSWORD': '$tralaxia',
+        'HOST': 'localhost',
+        'PORT': '10000',
     }
 }
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
