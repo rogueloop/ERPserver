@@ -141,11 +141,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'kel_erp',
+        'NAME': 'kelerp',
         'USER': 'postgres',
-        'PASSWORD': '$tralaxia',
-        'HOST': 'localhost',
-        'PORT': '10000',
+        'PASSWORD': 'post123',
+        'HOST': '65.1.131.141',
+        'PORT': '5432',
     }
 }
 
