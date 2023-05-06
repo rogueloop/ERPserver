@@ -6,6 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from planning.procedure import add_stock_log, get_excel
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer
 from .models import Bom, MaterialList, Product, Stock,Prdetail
+from django.db import transaction
 # Create your views here.
 
 
@@ -64,14 +65,20 @@ class Product_API_View(APIView):
 class Bom_API_View(APIView):
     serializer_class = BomSerializer
 
-    def get(self, request, pk):
+    def get(self, request,*args,**kwargs):
+        if 'product_id' in kwargs:
+            product_id = kwargs['product_id']
+        else:
+            product_id = kwargs['pk']
         try:
-            product = Product.objects.get(pk=pk)
+            product = Product.objects.get(pk=product_id)
         except Product.DoesNotExist:
             return Response({'Error_message': "The product does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         serialzer = Product_Serializer(product, many=False).data
         bom = self.serializer_class(Bom.objects.filter(
             bpcode__exact=str(serialzer['bpcode'])), many=True).data
+        if len(bom)==0:
+            return Response("No bom found",status=status.HTTP_404_NOT_FOUND)
         items = []
         for each_item in bom:
             each = dict(each_item)
@@ -81,19 +88,55 @@ class Bom_API_View(APIView):
             items.append(each_item)
         result = {serialzer['productname']: items}
         return Response(result)
-    # #experimental feature
-    # def put(self,request,pk):
-    #     try:
-    #         product = Product.objects.get(pk=pk)
-    #     except Product.DoesNotExist:
-    #         return Response({'Error_message': "The product does not exist"}, status=status.HTTP_400_BAD_REQUEST)
-    #     deleted_material=request.data['deleted_list']
-    #     newly_added_material=request.data['newly_added_list']
-    #     if len(deleted_material !=0):
-    #         for i in deleted_material:
-                
-    #     if len(newly_added_material !=0):
 
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        if (Product.objects.filter(productid=data.get('product_id')).exists()):
+            # bill of material (bom)
+            bom_data = list(data.get('bom'))
+            
+            with transaction.atomic():
+                for material in bom_data:
+                    bom_instance = self.serializer_class(data=material)
+                    bom_instance.is_valid(raise_exception=True)
+                    bom_instance.save()
+            response_data = {'message': 'BOM created successfully'}
+            response_data.update(self.get(request,product_id=data.get('product_id')).data)
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        else:
+            return Response("The product is not registered, register the product before adding bom")
+
+    def put(self, request, *args, **kwargs):
+        if 'product_id' in kwargs:
+            product_id = kwargs['product_id']
+        else:
+            product_id = kwargs['pk']
+        bpcode=Product.objects.get(pk=product_id).bpcode
+        existing_bom=Bom.objects.filter(bpcode__exact=bpcode)
+        existing_bom.delete()
+        response_data=self.post(request, **kwargs).data
+        response_data['message']= 'BOM updated successfully'
+        print(response_data)
+        return Response(response_data,status=status.HTTP_201_CREATED)
+    # deletion function 
+    def delete(self,request,*args, **kwargs):
+        if 'product_id' in kwargs:
+            product_id = kwargs['product_id']
+        else:
+            product_id = kwargs['pk']
+        bpcode=Product.objects.get(pk=product_id).bpcode
+        Bom_instances=Bom.objects.filter(bpcode__exact=bpcode)
+        if len(Bom_instances)==0:
+            return Response('Bom is not found, invalid bpcode',status=status.HTTP_404_NOT_FOUND)
+            
+        Bom_instances.delete()
+        return Response("Bom deleted successfully ",status=status.HTTP_200_OK)
+    
+            
+        
+        
+        
+        
 class AddStockAPI(generics.GenericAPIView):
     serializer_class = Stock_Serializer
     queryset = Stock.objects.all()
