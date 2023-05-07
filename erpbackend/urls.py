@@ -29,4 +29,5 @@ urlpatterns = [
     path('schema/', schema_view),
     path('api/planning/',include('planning.urls')),
     path("", include("loginManager.urls")),
+    path('api/notification/',include('notifications.urls'))
 ]

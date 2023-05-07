@@ -1,2 +1,2 @@
-import notifications.signal
-default_app_config = 'notification.apps.MyAppConfig'
+# from notifications import signals
+# default_app_config = 'notification.apps.MyAppConfig'
