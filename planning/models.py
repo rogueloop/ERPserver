@@ -23,7 +23,6 @@ class Status(models.Model):
         managed = True
         db_table = 'status'
 
-
 class MaterialList(models.Model):
     matcode = models.CharField(primary_key=True, max_length=6)
     title = models.CharField(max_length=45, blank=True, null=True)
