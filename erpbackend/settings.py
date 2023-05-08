@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-b6r@n!oz#9x0+w2i&_5pwgu=3krxeddl3jg$+_$p88do(=b#s9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['kelerp.onrender.com','3.110.28.84','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['kelerp.onrender.com','3.110.28.84','127.0.0.1','localhost','15.206.167.22']
 
 
 USE_L10N = False
@@ -144,7 +144,7 @@ DATABASES = {
         'NAME': 'kelerp',
         'USER': 'postgres',
         'PASSWORD': 'post123',
-        'HOST': '65.1.131.141',
+        'HOST': '15.206.167.22',
         'PORT': '5432',
     }
 }
