@@ -7,6 +7,8 @@ from planning.procedure import add_stock_log, get_excel
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer
 from .models import Bom, MaterialList, Product, Stock,Prdetail
 from django.db import transaction
+from django.db.models import F
+
 # Create your views here.
 
 
@@ -182,17 +184,9 @@ class NotifyLimitAPI(APIView):
     queryset = Stock.objects.all()
 
     def get(self, request, *args):
-        safe_stock = Stock.objects.values_list('safe_stock', flat=True).first()
-        stock_instance = Stock.objects.filter(qty__lt=safe_stock)
-        less_stock = []
-        for item in stock_instance:
-            if item.qty < item.safe_stock:
-                serializer = self.serializer_class(item)
-                material_name = MaterialList.objects.get(
-                    pk=serializer.data['matcode']).title
-                less_stock.append(
-                    {**serializer.data, **{'name': material_name}})
-        return Response({'list': less_stock}, status=status.HTTP_200_OK)
+        stock_instance = self.serializer_class(Stock.objects.filter(
+            qty__lt=F('safe_stock')),many=True).data
+        return Response({'list': [stock_instance]}, status=status.HTTP_200_OK)
 
 
 
