@@ -184,13 +184,16 @@ class NotifyLimitAPI(APIView):
     def get(self, request, *args):
         safe_stock = Stock.objects.values_list('safe_stock', flat=True).first()
         stock_instance = Stock.objects.filter(qty__lt=safe_stock)
-        serializer = self.serializer_class(stock_instance, many=True)
         less_stock = []
-        for item in serializer.data:
-            material_name = MaterialList.objects.get(pk=item['matcode']).title
-            item.update({'name': material_name})
-            less_stock.append(item)
+        for item in stock_instance:
+            if item.qty < item.safe_stock:
+                serializer = self.serializer_class(item)
+                material_name = MaterialList.objects.get(
+                    pk=serializer.data['matcode']).title
+                less_stock.append(
+                    {**serializer.data, **{'name': material_name}})
         return Response({'list': less_stock}, status=status.HTTP_200_OK)
+
 
 
 class Material_API(generics.GenericAPIView):
