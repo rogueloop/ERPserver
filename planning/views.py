@@ -186,7 +186,7 @@ class NotifyLimitAPI(APIView):
     def get(self, request, *args):
         stock_instance = self.serializer_class(Stock.objects.filter(
             qty__lt=F('safe_stock')),many=True).data
-        return Response({'list': [stock_instance]}, status=status.HTTP_200_OK)
+        return Response({'list': stock_instance}, status=status.HTTP_200_OK)
 
 
 
