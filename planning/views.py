@@ -5,7 +5,7 @@ from rest_framework import status, generics
 from rest_framework.pagination import PageNumberPagination
 from planning.procedure import add_stock_log, get_excel
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer
-from .models import Bom, MaterialList, Product, Stock,Prdetail
+from .models import Bom, MaterialList, Product, Stock,Prdetail,Stock_log
 from django.db import transaction
 from django.db.models import F
 
@@ -268,3 +268,8 @@ class Pr_Api(APIView):
             serializer.save()
             return Response({"successfully pi created":serializer.data},status=status.HTTP_201_CREATED)
         return Response({"error_occured":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+
+
+class Stock_log_Api(generics.ListCreateAPIView):
+    queryset = Stock_log.objects.all()
+    serializer_class = Stock_log_Serializer
