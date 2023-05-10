@@ -125,7 +125,7 @@ class Stock_log(models.Model):
         max_digits=15, decimal_places=3, blank=True, default=0)
     Add_or_Consumed = models.CharField(max_length=20, choices=ADD_OR_CONSUMED)
     Date = models.DateField(blank=True)
-    gnr_no = models.CharField(max_length=40, blank=True, null=True)
+    gnr_no = models.CharField(max_length=40,null=False)
     snr_no = models.CharField(max_length=40, blank=True, null=True)
     remark = models.CharField(max_length=100, blank=True, null=True)
     transaction_id = models.BigAutoField(primary_key=True)
