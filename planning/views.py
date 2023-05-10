@@ -175,8 +175,14 @@ class AddStockAPI(generics.GenericAPIView):
 
     def get(self, request, *args):
         stock_instance = self.queryset.all()
-        serializer = Stock_Serializer(stock_instance, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = Stock_Serializer(stock_instance, many=True).data
+        stock_list=[]
+        for i in serializer:
+            i=dict(i)
+            material_name=MaterialList.objects.get(matcode=i['matcode']).title
+            i['title']=material_name
+            stock_list.append(i)
+        return Response(stock_list, status=status.HTTP_200_OK)
 
 
 class NotifyLimitAPI(APIView):
