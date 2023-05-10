@@ -277,6 +277,7 @@ class Pr_Api(APIView):
 class Stock_log_Api(generics.ListCreateAPIView):
     serializer_class = Stock_log_Serializer
     queryset = Stock_log.objects.all()
+    allowed_methods = ['GET']
 
 
 class Status_Api(generics.RetrieveUpdateDestroyAPIView):
