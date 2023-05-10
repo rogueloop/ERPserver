@@ -17,7 +17,10 @@ urlpatterns=[
   path('product_suggestions/',product_suggestions),
   path('pi_api/',Pr_Api.as_view()),
   path('pi_api/<int:pk>', Pr_Api.as_view()),
-  path('stock_log/',Stock_log_Api.as_view())
+  path('stock_log/',Stock_log_Api.as_view()),
+  path('status/',Status_Api.as_view()),
+  path('status/<int:pk>', Status_Api.as_view())
+
   
  
 
