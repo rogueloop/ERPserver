@@ -6,6 +6,10 @@ from rest_framework.pagination import PageNumberPagination
 from planning.procedure import add_stock_log, get_excel
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer,StatusSerializer
 from .models import Bom, MaterialList, Product, Stock,Prdetail,Stock_log,Status
+
+from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer
+from .models import Bom, MaterialList, Product, Stock,Prdetail,Stock_log
+
 from django.db import transaction
 from django.db.models import F
 
@@ -278,3 +282,5 @@ class Stock_log_Api(generics.ListCreateAPIView):
 class Status_Api(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=StatusSerializer
     queryset=Status.objects.all()
+    queryset = Stock_log.objects.all()
+    serializer_class = Stock_log_Serializer
