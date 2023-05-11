@@ -44,7 +44,7 @@ class Stock_Serializer(serializers.ModelSerializer):
 class Stock_log_Serializer(serializers.ModelSerializer):
     class Meta:
         model=Stock_log
-        fields = ['matcode', 'qty', 'Add_or_Consumed', 'Date', 'gnr_no', 'snr_no', 'remark']
+        fields = ['matcode', 'qty', 'Add_or_Consumed', 'Date', 'grn_no', 'snr_no', 'remark']
         
 class Pr_Serializer(serializers.ModelSerializer):
     

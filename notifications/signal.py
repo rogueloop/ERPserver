@@ -8,16 +8,16 @@ from planning.models import Status
 def send_notification(sender, instance, created, **kwargs):
     if instance.status == Status.MARKETING_FINISHED:
         message = f'The Marketing department has approved work order {instance.work_order_no.id}'
-        recipient = User.objects.get(department='PLANNING')
+        recipient = User.objects.get(groups='PLANNING')
         notification = Notification.objects.create(
             message=message, recipient=recipient)
     elif instance.status == Status.PLANNING_IUSSUE:
         message = f'The Planning department has issued a warning for work order {instance.work_order_no.id}'
-        recipient = User.objects.get(department='MARKETING')
+        recipient = User.objects.get(groups='MARKETING')
         notification = Notification.objects.create(
             message=message, recipient=recipient)
     elif instance.status == Status.PLANNING_REJECTION:
         message = f'The Planning department has rejected work order {instance.work_order_no.id}'
-        recipient = User.objects.get(department='MARKETING')
+        recipient = User.objects.get(groups='MARKETING')
         notification = Notification.objects.create(
             message=message, recipient=recipient)
