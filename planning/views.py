@@ -283,4 +283,11 @@ class Stock_log_Api(generics.ListCreateAPIView):
 class Status_Api(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=StatusSerializer
     queryset=Status.objects.all()
-   
+    def put(self,request,*args,pk):
+        group =request.user.groups.first()
+        if group=='marketing':
+            return Response('done some logic for marketing')
+        elif group=='planning':
+            return Response('done some logic for planning')
+        else:
+            return Response('error in the deparment',status=status.HTTP_400_BAD_REQUEST)
