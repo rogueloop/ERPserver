@@ -11,6 +11,13 @@ from openpyxl.utils import get_column_letter
 from io import BytesIO
 from django.http import FileResponse, HttpResponse
 
+import re
+
+
+def sanitize_sheet_name(name):
+    # Remove invalid characters from the sheet name
+    sanitized_name = re.sub(r'[\\/:\*\?"<>\|]', '', name)
+    return sanitized_name
 
 
 def add_stock_log(verified_data):
@@ -33,7 +40,7 @@ def get_excel(data, name):
     ws = wb.active
 
     # set the sheet title
-    ws.title = name
+    ws.title = sanitize_sheet_name(name)
         # add title
     title_cell = ws.cell(row=1, column=1)
     title_cell.value = name
