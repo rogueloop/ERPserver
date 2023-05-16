@@ -1,4 +1,5 @@
 from rest_framework import status,generics
+from rest_framework.decorators import api_view, APIView
 from .models import Marketing, Item, addresss
 from .serializers import MarketingSerializer, ItemSerializer, AddressSerializer
 from planning.models import Status
@@ -60,4 +61,9 @@ class AddressRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 class StatusAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
-          
+  
+
+@api_view(['GET'])
+def order_suggestions(request):
+    data=Marketing.objects.values('no')
+    return Response(data,status=status.HTTP_202_ACCEPTED)        

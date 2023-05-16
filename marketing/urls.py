@@ -6,7 +6,8 @@ from .views import (
     ItemRetrieveUpdateDestroyAPIView,
     AddressListCreateAPIView,
     AddressRetrieveUpdateDestroyAPIView,
-    StatusAPIView
+    StatusAPIView,
+    order_suggestions
 )
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     path('item/<int:pk>/', ItemRetrieveUpdateDestroyAPIView.as_view()),
     path('addresss/', AddressListCreateAPIView.as_view()),
     path('addresss/<int:pk>/', AddressRetrieveUpdateDestroyAPIView.as_view()),
-    path('status/<int:pk>/',StatusAPIView.as_view())
+    path('status/<int:pk>/',StatusAPIView.as_view()),
+    path('order_suggestions/',order_suggestions)
     
 ]
