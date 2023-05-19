@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'planning',
     'knox',
-    'notifications'
+    'notifications',
+    'materials'
 ]
 CORS_ORIGIN_ALLOW_ALL =True
 
