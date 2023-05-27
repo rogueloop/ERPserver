@@ -224,6 +224,15 @@ class Material_API(generics.GenericAPIView):
                 return self.get_paginated_response(serializer.data)
             serializer = self.get_serializer(self.queryset, many=True)
             return Response(serializer.data)
+    def put(self, request, pk=None):
+        if pk:
+            obj = MaterialList.objects.get(pk=pk)
+            serializer = self.get_serializer(obj, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return JsonResponse({'success': serializer.data})
+        else:
+            return Response({'Error': 'Invalid pk'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # created function for producing excel sheet of bom
