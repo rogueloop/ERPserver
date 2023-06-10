@@ -6,18 +6,23 @@ from django.utils import timezone
 
 
 class Status(models.Model):
-    MARKETING_FINISHED = 1
-    PLANNING_IUSSUE = 2
-    PLANNING_REJECTION = 3
+    # MARKETING_FINISHED = 1
+    # PLANNING_IUSSUE = 2
+    # PLANNING_REJECTION = 3
 
-    STATUS = ((MARKETING_FINISHED, _("THE MARKETING DEPARTMENT APPROVED")),
-              (PLANNING_IUSSUE, _("PLANNING DEPARMENT ISSUED A WARNING")),
-              (PLANNING_REJECTION, _("PLANNING DEPARMENT HAS REJECTED THE ORDER")))
+    # STATUS = ((MARKETING_FINISHED, _("THE MARKETING DEPARTMENT APPROVED")),
+    #           (PLANNING_IUSSUE, _("PLANNING DEPARMENT ISSUED A WARNING")),
+    #           (PLANNING_REJECTION, _("PLANNING DEPARMENT HAS REJECTED THE ORDER")))
 
     work_order_no = models.OneToOneField(
         Marketing,on_delete=models.CASCADE, related_query_name='work_order_no', primary_key=True)
-    status = models.PositiveSmallIntegerField(
-        choices=STATUS, default=MARKETING_FINISHED,)
+    # status = models.PositiveSmallIntegerField(
+        # choices=STATUS, default=MARKETING_FINISHED,)
+    marketing_status = models.CharField(max_length=20, null=True, blank=True)
+    planning_status = models.CharField(max_length=20, null=True, blank=True)
+    purchase_status = models.CharField(max_length=20, null=True, blank=True)
+    design_status = models.CharField(max_length=20, null=True, blank=True)
+    production_status = models.CharField(max_length=20, null=True, blank=True)
 
     class Meta:
         managed = True

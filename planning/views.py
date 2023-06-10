@@ -7,8 +7,9 @@ from planning.procedure import add_stock_log, get_excel
 from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer,StatusSerializer
 from .models import Bom, MaterialList, Product, Stock,Prdetail,Stock_log,Status
 
-from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer
+from .serializer import BomSerializer, MaterialSerializer, Product_Serializer, Stock_Serializer, Stock_log_Serializer,Pr_Serializer,Prlog_Serializer
 from .models import Bom, MaterialList, Product, Stock,Prdetail,Stock_log
+
 
 from django.db import transaction
 from django.db.models import F
@@ -279,6 +280,9 @@ class Pr_Api(APIView):
         serializer=self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            logSerializer = Prlog_Serializer(data=request.data)
+            if logSerializer.is_valid():
+                logSerializer.save()
             return Response({"successfully pi created":serializer.data},status=status.HTTP_201_CREATED)
         return Response({"error_occured":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
 

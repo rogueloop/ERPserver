@@ -9,7 +9,7 @@ from .serializers import NotificationSerializer
 
 
 class NotificationAPIView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = NotificationSerializer
 
     def post(self, request, *args, **kwargs):
