@@ -17,7 +17,7 @@ class MarketingListCreateAPIView(generics.ListCreateAPIView):
         marketing_instance = serializer.save()
         status_instance = Status.objects.create(work_order_no=marketing_instance)
         response_data = serializer.data.copy()
-        response_data.update({'status': status_instance.status})
+        response_data.update({'status': status_instance})
       
         return Response(response_data)
  
@@ -30,7 +30,7 @@ class MarketingRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         serializer = self.serializer_class(marketing_instance)
         status_instance = Status.objects.get(work_order_no=marketing_instance)
         response_data = serializer.data
-        response_data.update({'status': status_instance.status})
+        response_data.update({'status': status_instance})
         items = Item.objects.filter(item_group=marketing_instance)
         items_serializer = ItemSerializer(items, many=True)
         address=AddressSerializer(addresss.objects.filter(group=marketing_instance),many=True).data

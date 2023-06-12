@@ -18,11 +18,11 @@ class Status(models.Model):
         Marketing,on_delete=models.CASCADE, related_query_name='work_order_no', primary_key=True)
     # status = models.PositiveSmallIntegerField(
         # choices=STATUS, default=MARKETING_FINISHED,)
-    marketing_status = models.CharField(max_length=20, null=True, blank=True)
-    planning_status = models.CharField(max_length=20, null=True, blank=True)
-    purchase_status = models.CharField(max_length=20, null=True, blank=True)
-    design_status = models.CharField(max_length=20, null=True, blank=True)
-    production_status = models.CharField(max_length=20, null=True, blank=True)
+    marketing_status = models.CharField(max_length=20, null=True, blank=True,default="Not started")
+    planning_status = models.CharField(max_length=20, null=True, blank=True,default="Not started")
+    purchase_status = models.CharField(max_length=20, null=True, blank=True,default="Not started")
+    design_status = models.CharField(max_length=20, null=True, blank=True,default="Not started")
+    production_status = models.CharField(max_length=20, null=True, blank=True,default="Not started")
 
     class Meta:
         managed = True
