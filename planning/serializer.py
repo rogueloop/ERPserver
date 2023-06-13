@@ -4,8 +4,7 @@ from .models import Prdetail, Prdetaillog, Status, Bom,MaterialList,Product, Sto
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
-        
-        fields = '__all__'
+        fields ='__all__'
  
  
 class BomSerializer(serializers.ModelSerializer):
