@@ -270,7 +270,7 @@ class Pr_Api(APIView):
     
     def get(self, request, pk=None):
         if pk:
-            obj = Prdetail.objects.get(pk=pk)
+            obj = Prdetail.objects.filter(prno=pk)
             serializer = self.serializer_class(obj,many=False)
             return Response({"successfully retrived":serializer.data},status=status.HTTP_200_OK)
         else:
