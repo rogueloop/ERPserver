@@ -270,9 +270,12 @@ class Pr_Api(APIView):
     
     def get(self, request, pk=None):
         if pk:
-            obj = Prdetail.objects.filter(prno=pk)
-            serializer = self.serializer_class(obj,many=False)
-            return Response({"successfully retrived":serializer.data},status=status.HTTP_200_OK)
+            obj = Prdetail.objects.filter(prno=pk).first()
+            if obj:
+                serializer = self.serializer_class(obj,many=False)
+                return Response({"successfully retrived":serializer.data},status=status.HTTP_200_OK)
+            else:
+                return Response({"Error": "Pr does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             serializer=self.serializer_class(self.objects,many=True)
             return Response({"PR_list":serializer.data},status=status.HTTP_200_OK)
