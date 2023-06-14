@@ -285,8 +285,11 @@ class Pr_Api(APIView):
                 logSerializer.save()
             return Response({"successfully pi created":serializer.data},status=status.HTTP_201_CREATED)
         return Response({"error_occured":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
-
-
+    def delete(self,request,pk):
+        obj=Prdetail.objects.get(pk=pk)
+        obj.delete()
+        return Response("successfully deleted",status=status.HTTP_200_OK)
+    
 class Stock_log_Api(generics.ListCreateAPIView):
     serializer_class = Stock_log_Serializer
     queryset = Stock_log.objects.all()
