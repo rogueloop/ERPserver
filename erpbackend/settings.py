@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'planning',
     'knox',
     'notifications',
-    'materials'
+    'materials',
+    'loginManager'
 ]
 CORS_ORIGIN_ALLOW_ALL =True
 

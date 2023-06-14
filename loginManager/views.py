@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from knox.views import LoginView as KnoxLoginView
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import login
-
+from .models import department
 # Register API
 
 class RegisterAPI(generics.GenericAPIView):
@@ -17,7 +17,8 @@ class RegisterAPI(generics.GenericAPIView):
         user = serializer.save()
         return Response({
         "user": UserSerializer(user, context=self.get_serializer_context()).data,
-        "token": AuthToken.objects.create(user)[1]
+        "token": AuthToken.objects.create(user)[1],
+        "deparment":department.objects.get(user=user).department
         })
 
 
@@ -29,4 +30,11 @@ class LoginAPI(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        return super(LoginAPI, self).post(request, format=None)
+        response_data = {
+            'token': AuthToken.objects.create(user)[1],
+            'user': UserSerializer(user).data,
+            'department': department.objects.get(user=user).department
+        }
+        return Response(response_data)
+
+        

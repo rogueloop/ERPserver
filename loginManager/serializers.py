@@ -1,20 +1,27 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .models import department
 
-# User Serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email')
+        fields = ('id', 'username')
 
-# Register Serializer
+class departmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = department
+        fields = '__all__'
+
 class RegisterSerializer(serializers.ModelSerializer):
+    department = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password','groups')
+        fields = ('id', 'username','password', 'department')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
-
+        department_data = validated_data.pop('department')
+        user = User.objects.create_user(**validated_data)
+        department.objects.create(user=user, department=department_data)
         return user
