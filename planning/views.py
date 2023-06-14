@@ -289,7 +289,7 @@ class Pr_Api(APIView):
             return Response({"successfully pi created":serializer.data},status=status.HTTP_201_CREATED)
         return Response({"error_occured":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
     def delete(self,request,pk):
-        obj=Prdetail.objects.get(pk=pk)
+        obj=Prdetail.objects.filter(prno=pk).first()
         obj.delete()
         return Response("successfully deleted",status=status.HTTP_200_OK)
     
