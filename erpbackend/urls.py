@@ -24,7 +24,7 @@ from rest_framework.schemas import get_schema_view
 schema_view = get_schema_view(title='KEL ERP') 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin_v2/', admin.site.urls),
     path('api/marketing/', include('marketing.urls')),
     path('schema/', schema_view),
     path('api/planning/',include('planning.urls')),
